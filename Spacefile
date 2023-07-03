@@ -1,0 +1,17 @@
+v: 0
+micros:
+  - name: client
+    dev: npm run dev
+    run: npm run build
+    src: frontend/frontend-proventus
+    engine: react
+    primary: true
+    serve: ./dist
+    commands:
+      - npm run build
+  
+  - name: api
+    src: backend
+    engine: nodejs16
+    run: node index.mjs
+    dev: nodemon  index.mjs

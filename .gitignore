@@ -1,0 +1,30 @@
+.space
+.env
+
+# Dependencies
+/node_modules
+
+# Build files
+/build
+/dist
+
+# Environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Cache and log files
+/.eslintcache
+/.yarn/cache
+/yarn-error.log
+/npm-debug.log*
+
+# Editor files
+.vscode
+.idea
+*.sublime-project
+*.sublime-workspace
+
+# macOS files
+.DS_Store
