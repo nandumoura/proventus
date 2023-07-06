@@ -1,20 +1,25 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 interface Props {
   menuItems: Array<string>;
+  selectedItemPropDrilling: (item: string | null) => void;
 }
 interface SelectedItem {
   item: string | null;
   idx: number | null;
 }
 
-const ProjectMenuItem = ({ menuItems }: Props) => {
+const ProjectMenuItem = ({ menuItems, selectedItemPropDrilling }: Props) => {
   // You can use any api to generate list of countries
 
   const [selectedItem, setSelectedItem] = useState<SelectedItem>({
     item: null,
     idx: null,
   });
+
+  useEffect(() => {
+    selectedItemPropDrilling(selectedItem.item);
+  }, [selectedItem]);
 
   const [state, setState] = useState(false);
 
