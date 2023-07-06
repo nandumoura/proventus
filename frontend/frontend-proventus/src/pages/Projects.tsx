@@ -1,6 +1,6 @@
 import ProjectMenuItem from "../components/ProjectsNavbar";
 import ProjectsTable from "../components/ProjectsTable";
-
+import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { addProject } from "../features/projects/projectsSlice";
 import { useEffect, useState } from "react";
@@ -17,9 +17,9 @@ const ProjectsPage = () => {
     <section className="">
       <div className="flex justify-between pb-10">
         <h1 className="">Projects Page</h1>
-        <button className="px-8 py-2  text-white duration-150 bg-teal-500 rounded-lg hover:bg-teal-600 active:shadow-lg">
+        <Link to="/create-project" className="px-8 py-2  text-white duration-150 bg-teal-500 rounded-lg hover:bg-teal-600 active:shadow-lg">
           Add Project
-        </button>
+        </Link>
       </div>
 
       <div className="">

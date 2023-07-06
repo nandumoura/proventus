@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-
+import { Link } from "react-router-dom";
 const Sidebar = () => {
   const profileRef = useRef<HTMLButtonElement | null>(null);
 
@@ -7,7 +7,7 @@ const Sidebar = () => {
 
   const navigation = [
     {
-      href: "/projects",
+      href: "/",
       name: "Projetos",
       icon: (
         <svg
@@ -27,7 +27,7 @@ const Sidebar = () => {
       ),
     },
     {
-      href: "/customer",
+      href: "/create-project",
       name: "Customer",
       icon: (
         <svg
@@ -183,15 +183,15 @@ const Sidebar = () => {
             <ul className="px-4 text-sm font-medium flex-1">
               {navigation.map((item, idx) => (
                 <li key={idx}>
-                  <a
-                    href={item.href}
+                  <Link
+                    to={item.href}
                     className="relative flex items-center justify-center gap-x-2 text-gray-600 p-2 rounded-lg  hover:bg-gray-50 active:bg-gray-100 duration-150 group"
                   >
                     <div className="text-gray-500">{item.icon}</div>
                     <span className="absolute left-14 p-1 px-1.5 rounded-md whitespace-nowrap text-xs text-white bg-gray-800 hidden group-hover:inline-block group-focus:hidden duration-150">
                       {item.name}
                     </span>
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -199,15 +199,15 @@ const Sidebar = () => {
               <ul className="px-4 pb-4 text-sm font-medium">
                 {navsFooter.map((item, idx) => (
                   <li key={idx}>
-                    <a
-                      href={item.href}
+                    <Link
+                      to={item.href}
                       className="relative flex items-center justify-center gap-x-2 text-gray-600 p-2 rounded-lg  hover:bg-gray-50 active:bg-gray-100 duration-150 group"
                     >
                       <div className="text-gray-500">{item.icon}</div>
                       <span className="absolute left-14 p-1 px-1.5 rounded-md whitespace-nowrap text-xs text-white bg-gray-800 hidden group-hover:inline-block group-focus:hidden duration-150">
                         {item.name}
                       </span>
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -231,12 +231,12 @@ const Sidebar = () => {
                       <span className="block text-gray-500/80 p-2">
                         vienna@gmail.com
                       </span>
-                      <a
-                        href="/implementar"
+                      <Link
+                        to="/implementar"
                         className="block w-full p-2 text-left rounded-md hover:bg-gray-50 active:bg-gray-100 duration-150"
                       >
                         Status
-                      </a>
+                      </Link>
                       <div className="relative rounded-md hover:bg-gray-50 active:bg-gray-100 duration-150">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
