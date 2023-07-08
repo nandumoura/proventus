@@ -1,13 +1,15 @@
 import ProjectMenuItem from "../components/ProjectsNavbar";
 import ProjectsTable from "../components/ProjectsTable";
 import { Link } from "react-router-dom";
-import { useAppSelector } from "../app/hooks";
 
+// import store
+import { useAppSelector } from "../app/hooks";
 import { ProjectState } from "../features/projects/projectsSlice";
 
 import { useEffect, useState } from "react";
 
 const ProjectsPage = () => {
+  console.log("Carregou Projects page")
   const projects = useAppSelector((state) => state.project);
   const [projectNames, setProjectNames] = useState<string[]>([]);
   const [selectedProject, setSelectedProject] = useState<ProjectState | null>(
