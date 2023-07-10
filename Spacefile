@@ -12,6 +12,7 @@ micros:
   
   - name: api
     src: backend
+    path: api
     engine: nodejs16
     run: node index.mjs
     dev: nodemon  index.mjs
