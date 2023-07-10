@@ -5,20 +5,29 @@ import { ProjectState } from "../types/typings";
 export const projectsApi = createApi({
   reducerPath: "projects",
   baseQuery: fetchBaseQuery({ baseUrl: "/api/projects" }),
-  tagTypes: ['Projects'],
+  tagTypes: ["Projects"],
   endpoints: (builder) => ({
     getProjects: builder.query({
       query: () => `/`,
-      transformResponse: (response: {success: boolean, projects: ProjectState[]})=> response.projects,
+      transformResponse: (response: {
+        success: boolean;
+        projects: ProjectState[];
+      }) => response.projects,
     }),
     createProject: builder.mutation({
-      query: (project: ProjectState)=>({
+      query: (project: ProjectState) => ({
         url: `/`,
         method: "POST",
-        body: project
+        body: project,
       }),
-      invalidatesTags: ['Projects'],
-    })
+      transformResponse: (response: {
+       
+          success: boolean;
+          project: ProjectState;
+        
+      }) => response.project,
+      invalidatesTags: ["Projects"],
+    }),
   }),
 });
 
