@@ -5,7 +5,9 @@ export interface Task {
   timeSpend: number;
 }
 export interface ProjectState {
-  key: string;
+  key?: string;
+  createdAt?: number;
+  updatedAt?: number;
   name: string;
   description: string;
   estimatedTime: number;
