@@ -3,13 +3,18 @@ import ProjectsTable from "../components/ProjectsTable";
 import { Link } from "react-router-dom";
 import { useGetProjectsQuery } from "../services/projectsApi";
 
-import { ProjectState } from "../features/projects/projectsSlice";
+import { ProjectState } from "../types/typings";
 
 import { useEffect, useState } from "react";
 
 const ProjectsPage = () => {
   console.log("Carregou Projects page");
-  const { data: projects = [] } = useGetProjectsQuery("projects");
+  const {
+    data: projects = [],
+    isLoading,
+    isError,
+    refetch,
+  } = useGetProjectsQuery("projects");
   const [projectNames, setProjectNames] = useState<string[]>([]);
   const [selectedProject, setSelectedProject] = useState<ProjectState | null>(
     null
@@ -18,7 +23,12 @@ const ProjectsPage = () => {
   useEffect(() => {
     const names = projects.map((project) => project.name);
     setProjectNames(names);
+
   }, [projects]);
+
+  useEffect(()=>{
+    refetch();
+  },[])
 
   function selectedItemPropDrilling(item: string | null) {
     if (item !== null) {
@@ -27,6 +37,13 @@ const ProjectsPage = () => {
       );
       setSelectedProject(project[0]);
     }
+  }
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (isError) {
+    return <p>Error occurred while fetching projects.</p>;
   }
   return (
     <section className="">

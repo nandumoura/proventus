@@ -1,18 +1,19 @@
-
 import { useState } from "react";
 import { useDrag, useDrop, DragSourceMonitor } from "react-dnd";
-import {
-  TaskColumnProps,
-  DraggableItemProps,
-  DragItem,
-} from "../../types/typings";
+import { DraggableItemProps, DragItem, Task } from "../../types/typings";
+
+export interface TaskColumnProps {
+  title: string;
+  tasks: Task[];
+  onRemove: (columnTitle: string) => void;
+  onItemDrop: (titleColumnTarget: string, id: string) => void;
+}
 
 const TaskColumn: React.FC<TaskColumnProps> = ({
   title,
   tasks,
   onItemDrop,
   onRemove,
-  setActiveTask,
 }) => {
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: "draggableItem",
@@ -33,8 +34,14 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
       }`}
     >
       <div className="flex justify-between">
-      <h3>{title}</h3> 
-      <button onClick={()=>{onRemove(title)}}>Remove</button>
+        <h3>{title}</h3>
+        <button
+          onClick={() => {
+            onRemove(title);
+          }}
+        >
+          Remove
+        </button>
       </div>
 
       <div className={`min-w-full bg-slate-100 p-4 rounded-md `}>

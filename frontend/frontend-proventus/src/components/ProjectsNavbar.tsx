@@ -19,7 +19,7 @@ const ProjectMenuItem = ({ menuItems, selectedItemPropDrilling }: Props) => {
 
   useEffect(() => {
     selectedItemPropDrilling(selectedItem.item);
-  }, [selectedItem]);
+  }, [selectedItemPropDrilling, selectedItem]);
 
   const [state, setState] = useState(false);
 

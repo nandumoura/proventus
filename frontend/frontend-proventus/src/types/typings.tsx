@@ -4,6 +4,13 @@ export interface Task {
   projectId: string;
   timeSpend: number;
 }
+export interface ProjectState {
+  key: string;
+  name: string;
+  description: string;
+  estimatedTime: number;
+  elapsedTime: number;
+}
 
 export interface DroppableAreaProps {
   changedItensDroped: (type: string, id: string) => void;

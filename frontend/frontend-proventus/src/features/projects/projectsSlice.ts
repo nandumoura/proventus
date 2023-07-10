@@ -1,13 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { projectsApi } from "../../services/projectsApi";
-
-export interface ProjectState {
-  key: string;
-  name: string;
-  description: string;
-  estimatedTime: number;
-  elapsedTime: number;
-}
+import { ProjectState } from "../../types/typings";
 
 interface AddProjectPayload {
   project: ProjectState;

@@ -4,10 +4,12 @@ import { useAppDispatch } from "../app/hooks";
 import { addProject } from "../features/projects/projectsSlice";
 import { v4 as uuidv4 } from "uuid";
 
+import { useCreateProjectMutation } from "../services/projectsApi";
+
 const CreateProject = () => {
   const dispatch = useAppDispatch();
-
-  // function to reset 
+  const [createProject] = useCreateProjectMutation();
+  // function to reset
   const resetState = () => {
     return {
       key: "project-" + uuidv4(),
@@ -35,6 +37,7 @@ const CreateProject = () => {
   };
 
   function handleClick() {
+    createProject(formState);
     dispatch(
       addProject({
         project: formState,
@@ -50,21 +53,21 @@ const CreateProject = () => {
       </div>
       <div className=" bg-white max-w-lg p-8 shadow-md space-y-4  mt-4">
         <Input
-        value={formState.name}
+          value={formState.name}
           changeEvent={handleInputChange}
           label="Name"
           name="name"
           placeholder=""
         />
         <Input
-        value={formState.description}
+          value={formState.description}
           changeEvent={handleInputChange}
           label="Description"
           name="description"
           placeholder=""
         />
         <Input
-        value={formState.estimatedTime}
+          value={formState.estimatedTime}
           type="number"
           changeEvent={handleInputChange}
           label="Estimated time"
