@@ -20,14 +20,6 @@ export interface DragItem {
   id: string;
 }
 
-export interface TaskColumnProps {
-  title: string;
-  tasks: Task[];
-  onRemove: (columnTitle: string) => void;
-  onItemDrop: (titleColumnTarget: string, id: string) => void;
-  setActiveTask: (id: string) => void;
-}
-
 export interface KanbanColumn {
   title: string;
   tasks: Task[];

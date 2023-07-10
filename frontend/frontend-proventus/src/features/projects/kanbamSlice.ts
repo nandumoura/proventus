@@ -23,25 +23,34 @@ const kanbanSlice = createSlice({
         title: action.payload,
         tasks: [],
       };
-      state.columns.push(newColumn);
+      // impede de criar mais de uma coluna
+      const verifyIfColumnExists = state.columns.some(
+        (column) => column.title === newColumn.title
+      );
+      if (!verifyIfColumnExists) {
+        state.columns.push(newColumn);
+      }
     },
     removeColumn: (state, action: PayloadAction<string>) => {
       state.columns = state.columns.filter(
         (column) => column.title !== action.payload
       );
     },
-    addTask: (
-      state,
-      action: PayloadAction<AddTaskPayloadAction>
-    ) => {
-      const { task } = action.payload;
-      console.log(task);
+    addTask: (state, action: PayloadAction<AddTaskPayloadAction>) => {
+      const { task, columnTitle } = action.payload;
+
       const column = state.columns.find(
-        (column) => column.title === "Tarefas"
+        (column) => column.title === columnTitle
       );
 
       if (column) {
-        column.tasks.push(task);
+        // impede de adicionar tarefas repetidas
+        const verifyIfTaskExistInColumn = column.tasks.some(
+          (taskInColum) => taskInColum.id === task.id
+        );
+        if (!verifyIfTaskExistInColumn) {
+          column.tasks.push(task);
+        }
       }
     },
     moveTask: (

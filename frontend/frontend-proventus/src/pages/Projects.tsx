@@ -1,16 +1,15 @@
 import ProjectMenuItem from "../components/ProjectsNavbar";
 import ProjectsTable from "../components/ProjectsTable";
 import { Link } from "react-router-dom";
+import { useGetProjectsQuery } from "../services/projectsApi";
 
-// import store
-import { useAppSelector } from "../app/hooks";
 import { ProjectState } from "../features/projects/projectsSlice";
 
 import { useEffect, useState } from "react";
 
 const ProjectsPage = () => {
-  console.log("Carregou Projects page")
-  const projects = useAppSelector((state) => state.project);
+  console.log("Carregou Projects page");
+  const { data: projects = [] } = useGetProjectsQuery("projects");
   const [projectNames, setProjectNames] = useState<string[]>([]);
   const [selectedProject, setSelectedProject] = useState<ProjectState | null>(
     null
@@ -29,7 +28,6 @@ const ProjectsPage = () => {
       setSelectedProject(project[0]);
     }
   }
-  //const projectNamesFromStore = ["blog", "site", "youtube"];
   return (
     <section className="">
       <div className="flex justify-between pb-10">
