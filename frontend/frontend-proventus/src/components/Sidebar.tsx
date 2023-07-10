@@ -28,7 +28,7 @@ const Sidebar = () => {
     },
     {
       href: "/create-project",
-      name: "Customer",
+      name: "Create Project",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
