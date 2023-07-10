@@ -13,7 +13,13 @@ export interface ProjectState {
   estimatedTime: number;
   elapsedTime: number;
 }
-
+export interface Timer {
+  seconds: number;
+  minutes: number;
+  hours: number;
+  days: number;
+  months: number;
+}
 export interface DroppableAreaProps {
   changedItensDroped: (type: string, id: string) => void;
   type: string;

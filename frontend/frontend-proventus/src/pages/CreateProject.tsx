@@ -1,11 +1,15 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
+//components
+import InputTimer from "../components/InputTimer";
 import Input from "../components/Input";
+// utils
 import { parseNumber } from "../utils/utils";
-
+// services
 import { useCreateProjectMutation } from "../services/projectsApi";
 
 const CreateProject = () => {
   const [createProject] = useCreateProjectMutation();
+  const [timerInMiliseconds, setTimerInMiliseconds] = useState(0);
   // function to reset
   const resetState = () => {
     return {
@@ -32,12 +36,18 @@ const CreateProject = () => {
     setFormState(resetState());
   }
 
+  useEffect(() => {
+    setFormState((prevState) => ({
+      ...prevState,
+      estimatedTime: timerInMiliseconds,
+    }));
+  }, [timerInMiliseconds]);
   return (
     <section className="">
       <div className="flex justify-between pb-10">
-        <h1 className="">Create Project Page</h1>
+        <h1 className="">Create Project Page timer{timerInMiliseconds}</h1>
       </div>
-      <div className=" bg-white max-w-lg p-8 shadow-md space-y-4  mt-4">
+      <div className=" bg-white max-w-3xl p-8 shadow-md space-y-4  mt-4">
         <Input
           value={formState.name}
           changeEvent={handleInputChange}
@@ -52,14 +62,8 @@ const CreateProject = () => {
           name="description"
           placeholder=""
         />
-        <Input
-          value={formState.estimatedTime}
-          type="number"
-          changeEvent={handleInputChange}
-          label="Estimated time"
-          name="estimatedTime"
-          placeholder=""
-        />
+
+        <InputTimer timerState={setTimerInMiliseconds} />
         <button
           onClick={handleClick}
           className="px-8 py-2  text-white duration-150 bg-teal-500 rounded-lg hover:bg-teal-600 active:shadow-lg"
