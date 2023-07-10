@@ -1,18 +1,14 @@
 import { ChangeEvent, useState } from "react";
 import Input from "../components/Input";
-import { useAppDispatch } from "../app/hooks";
-import { addProject } from "../features/projects/projectsSlice";
-import { v4 as uuidv4 } from "uuid";
+import { parseNumber } from "../utils/utils";
 
 import { useCreateProjectMutation } from "../services/projectsApi";
 
 const CreateProject = () => {
-  const dispatch = useAppDispatch();
   const [createProject] = useCreateProjectMutation();
   // function to reset
   const resetState = () => {
     return {
-      key: "project-" + uuidv4(),
       name: "",
       description: "",
       estimatedTime: 0,
@@ -22,13 +18,8 @@ const CreateProject = () => {
   const [formState, setFormState] = useState(resetState());
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    // precisei criar essa gambiarra para passar um valor do tipo number
-    let newValue: string | number = "";
-    if (name == "estimatedTime") {
-      newValue = Number(value);
-    } else {
-      newValue = value;
-    }
+    // the code below change string to number case field is estimatedTime
+    const newValue = name === "estimatedTime" ? parseNumber(value) : value;
 
     setFormState((prevState) => ({
       ...prevState,
@@ -38,11 +29,6 @@ const CreateProject = () => {
 
   function handleClick() {
     createProject(formState);
-    dispatch(
-      addProject({
-        project: formState,
-      })
-    );
     setFormState(resetState());
   }
 
