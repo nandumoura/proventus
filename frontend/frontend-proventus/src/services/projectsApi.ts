@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
 import { ProjectState } from "../types/typings";
 // Define a service using a base URL and expected endpoints
 
@@ -21,11 +22,16 @@ export const projectsApi = createApi({
         body: project,
       }),
       transformResponse: (response: {
-       
-          success: boolean;
-          project: ProjectState;
-        
+        success: boolean;
+        project: ProjectState;
       }) => response.project,
+      invalidatesTags: ["Projects"],
+    }),
+    deleteProject: builder.mutation({
+      query: (key: string) => ({
+        url: `/${key}`,
+        method: "DELETE",
+      }),
       invalidatesTags: ["Projects"],
     }),
   }),
@@ -34,4 +40,4 @@ export const projectsApi = createApi({
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
 
-export const { useGetProjectsQuery, useCreateProjectMutation } = projectsApi;
+export const { useGetProjectsQuery, useCreateProjectMutation, useDeleteProjectMutation } = projectsApi;

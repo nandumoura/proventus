@@ -1,11 +1,27 @@
+// src/components/ProjectsTable.js
+
+import TrashIcon from "../icons/trash";
+import {
+  useDeleteProjectMutation,
+  useGetProjectsQuery,
+} from "../services/projectsApi";
 import { ProjectState } from "../types/typings";
 import ViewTimer from "./ViewTimer";
+
 interface Props {
   projects: ProjectState[] | null;
 }
 
 const ProjectsTable = ({ projects }: Props) => {
-  console.log("carregou projects table");
+  const { refetch } = useGetProjectsQuery("projects");
+
+  const [deleteProject] = useDeleteProjectMutation();
+
+  function handleDelete(key: string) {
+    deleteProject(key);
+    refetch();
+  }
+
   return (
     <div className="max-w-screen-xl mx-auto px-4 md:px-8">
       <div className="max-w-lg">
@@ -25,6 +41,7 @@ const ProjectsTable = ({ projects }: Props) => {
               <th className="py-3 px-6">Description</th>
               <th className="py-3 px-6">Estimated Time</th>
               <th className="py-3 px-6">Elapsed Time</th>
+              <th className="py-3 px-6">Delete</th>
             </tr>
           </thead>
           <tbody className="text-gray-600 divide-y">
@@ -39,6 +56,12 @@ const ProjectsTable = ({ projects }: Props) => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <ViewTimer timer={project.elapsedTime} />
+                </td>
+                <td className="px-6 py-4 text-red-500 whitespace-nowrap">
+                  {/* eslint-disable  @typescript-eslint/no-non-null-assertion */}
+                  <button onClick={() => handleDelete(project.key!)}>
+                    <TrashIcon />
+                  </button>
                 </td>
               </tr>
             ))}
