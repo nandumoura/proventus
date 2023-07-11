@@ -72,7 +72,7 @@ const InputTimer = ({ timerState, isTimeToReset }: Props) => {
 
   useEffect(() => {
     timerState(calculateMilliseconds(timer));
-  }, [timer]);
+  }, [timer,timerState]);
 
   return (
     <div className="flex justify-center items-center text-gray-400 border rounded-md">

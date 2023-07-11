@@ -1,4 +1,3 @@
-import ProjectMenuItem from "../components/ProjectsNavbar";
 import ProjectsTable from "../components/ProjectsTable";
 import { Link } from "react-router-dom";
 import { useGetProjectsQuery } from "../services/projectsApi";
@@ -15,7 +14,7 @@ const ProjectsPage = () => {
 
   useEffect(() => {
     refetch();
-  }, []);
+  }, [refetch]);
 
   if (isLoading) {
     return <p>Loading...</p>;
