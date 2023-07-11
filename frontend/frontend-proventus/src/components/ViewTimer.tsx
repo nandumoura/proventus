@@ -8,8 +8,8 @@ const ViewTimer = ({ timer }: Props) => {
 
   return (
     <div>
-      {timerNormalized.months} months {timerNormalized.days} days{" "}
-      {timerNormalized.hours} hours    {timerNormalized.minutes} minutes
+      {timerNormalized.months} M {timerNormalized.days} D{" "}
+      Hours: {timerNormalized.hours} H {timerNormalized.minutes} min 
     </div>
   );
 };
