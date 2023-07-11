@@ -2,10 +2,7 @@ import ProjectMenuItem from "../components/ProjectsNavbar";
 import ProjectsTable from "../components/ProjectsTable";
 import { Link } from "react-router-dom";
 import { useGetProjectsQuery } from "../services/projectsApi";
-
-import { ProjectState } from "../types/typings";
-
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const ProjectsPage = () => {
   console.log("Carregou Projects page");
@@ -15,29 +12,11 @@ const ProjectsPage = () => {
     isError,
     refetch,
   } = useGetProjectsQuery("projects");
-  const [projectNames, setProjectNames] = useState<string[]>([]);
-  const [selectedProject, setSelectedProject] = useState<ProjectState | null>(
-    null
-  );
 
   useEffect(() => {
-    const names = projects.map((project) => project.name);
-    setProjectNames(names);
-
-  }, [projects]);
-
-  useEffect(()=>{
     refetch();
-  },[])
+  }, []);
 
-  function selectedItemPropDrilling(item: string | null) {
-    if (item !== null) {
-      const project = projects.filter(
-        (project: ProjectState) => project.name === item
-      );
-      setSelectedProject(project[0]);
-    }
-  }
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -58,14 +37,6 @@ const ProjectsPage = () => {
       </div>
 
       <div className="">
-        <div className="flex  items-center justify-between">
-          <h2 className="">Projects List</h2>
-          <ProjectMenuItem
-            selectedItemPropDrilling={selectedItemPropDrilling}
-            menuItems={projectNames}
-          />
-        </div>
-
         <ProjectsTable projects={projects} />
       </div>
     </section>
