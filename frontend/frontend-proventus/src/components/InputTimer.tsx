@@ -3,7 +3,8 @@ import { Timer } from "../types/typings";
 import { calculateMilliseconds } from "../utils/utils";
 
 interface Props {
-  timerState: (value: number)=>void
+  timerState: (value: number) => void;
+  isTimeToReset: boolean;
 }
 
 const resetTimer = () => {
@@ -16,7 +17,7 @@ const resetTimer = () => {
   };
 };
 
-const InputTimer = ({timerState}:Props) => {
+const InputTimer = ({ timerState, isTimeToReset }: Props) => {
   const [timer, setTimer] = useState<Timer>(resetTimer());
 
   const inputClassNames =
@@ -31,62 +32,52 @@ const InputTimer = ({timerState}:Props) => {
       ...prevState,
       [name]: parsedValue,
     }));
-
   };
 
-  useEffect(()=>{
+  const validateAndSetTimer = (updatedTimer: Timer) => {
+    if (updatedTimer.days > 31) {
+      updatedTimer.days = 31;
+    }
+    if (updatedTimer.days < 0) {
+      updatedTimer.days = 0;
+    }
+
+    if (updatedTimer.minutes > 59) {
+      updatedTimer.minutes = 59;
+    }
+    if (updatedTimer.minutes < 0) {
+      updatedTimer.minutes = 0;
+    }
+
+    if (updatedTimer.hours > 23) {
+      updatedTimer.hours = 23;
+    }
+
+    if (updatedTimer.months < 0) {
+      updatedTimer.months = 0;
+    }
+
+    setTimer(updatedTimer);
+  };
+
+  useEffect(() => {
+    validateAndSetTimer(timer);
+  }, [timer]);
+
+  useEffect(() => {
+    if (isTimeToReset) {
+      setTimer(resetTimer());
+    }
+  }, [isTimeToReset]);
+
+  useEffect(() => {
     timerState(calculateMilliseconds(timer));
-  },[timer])
-
-  useEffect(() => {
-    if (timer.days > 31) {
-      setTimer((prevState) => ({
-        ...prevState,
-        days: 31,
-      }));
-    }
-    if (timer.days < 0) {
-      setTimer((prevState) => ({
-        ...prevState,
-        days: 0,
-      }));
-    }
-  }, [timer.days]);
-
-  useEffect(() => {
-    if (timer.minutes > 59) {
-      setTimer((prevState) => ({
-        ...prevState,
-        minutes: 59,
-      }));
-    }
-    if (timer.minutes < 0) {
-      setTimer((prevState) => ({
-        ...prevState,
-        minutes: 0,
-      }));
-    }
-  }, [timer.minutes]);
-
-  useEffect(() => {
-    if (timer.hours > 23) {
-      setTimer((prevState) => ({
-        ...prevState,
-        hours: 23,
-      }));
-    }
-    if (timer.months < 0) {
-      setTimer((prevState) => ({
-        ...prevState,
-        months: 0,
-      }));
-    }
-  }, [timer.hours]);
+  }, [timer]);
 
   return (
     <div className="flex justify-center items-center text-gray-400 border rounded-md">
       <div className="px-3 py-2.5 rounded-l-md bg-gray-50 border-r">
-        Estimated time 
+        Estimated time
       </div>
       <div className={inputBoxClassNames}>
         <label>Months</label>

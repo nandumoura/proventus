@@ -9,6 +9,7 @@ import { useCreateProjectMutation } from "../services/projectsApi";
 
 const CreateProject = () => {
   const [createProject] = useCreateProjectMutation();
+  const [resetTimer, setResetTimer] = useState(false)
   const [timerInMiliseconds, setTimerInMiliseconds] = useState(0);
   // function to reset
   const resetState = () => {
@@ -34,7 +35,12 @@ const CreateProject = () => {
   function handleClick() {
     createProject(formState);
     setFormState(resetState());
+    setResetTimer(true)
+   
   }
+  useEffect(()=>{
+    setResetTimer(false)
+  },[resetTimer])
 
   useEffect(() => {
     setFormState((prevState) => ({
@@ -45,7 +51,7 @@ const CreateProject = () => {
   return (
     <section className="">
       <div className="flex justify-between pb-10">
-        <h1 className="">Create Project Page timer{timerInMiliseconds}</h1>
+        <h1 className="">Create Project Page </h1>
       </div>
       <div className=" bg-white max-w-3xl p-8 shadow-md space-y-4  mt-4">
         <Input
@@ -63,7 +69,7 @@ const CreateProject = () => {
           placeholder=""
         />
 
-        <InputTimer timerState={setTimerInMiliseconds} />
+        <InputTimer timerState={setTimerInMiliseconds} isTimeToReset={resetTimer} />
         <button
           onClick={handleClick}
           className="px-8 py-2  text-white duration-150 bg-teal-500 rounded-lg hover:bg-teal-600 active:shadow-lg"
