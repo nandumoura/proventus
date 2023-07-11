@@ -15,6 +15,15 @@ export const fetchProjects = async () => {
   }
 };
 
+export const getProjectById = async (projectId) =>{
+  try {
+    const project = db.get(projectId)
+    return project
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export const createProject = async (projectData) => {
   try {
     const project = {

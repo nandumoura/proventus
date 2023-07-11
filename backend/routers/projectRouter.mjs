@@ -24,7 +24,6 @@ router.post("/", async (req, res) => {
         { 
           id: uuidv4(),
           title: "Todo",
-          tasks: [],
         }
       ]
     }

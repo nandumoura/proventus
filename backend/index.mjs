@@ -2,6 +2,8 @@
 import Express from "express";
 import projectsRouter from "./routers/projectRouter.mjs"
 import kanbanRouter from "./routers/kanbanRoutes.mjs"
+import taskRouter from "./routers/tasksRouter.mjs"
+
 import cors from "cors"
 const app = Express();
 
@@ -9,6 +11,7 @@ app.use(Express.json());
 app.use(cors())
 app.use("/projects",projectsRouter)
 app.use("/kanban",kanbanRouter)
+app.use("/tasks", taskRouter)
 
 const port = process.env.PORT;
 console.log(process.env)
