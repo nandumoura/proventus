@@ -66,7 +66,7 @@ const ProjectsPage = () => {
           />
         </div>
 
-        <ProjectsTable project={selectedProject} />
+        <ProjectsTable projects={projects} />
       </div>
     </section>
   );
