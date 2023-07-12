@@ -10,7 +10,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./components/App.tsx";
 import CreateProject from "./pages/CreateProject.tsx";
 import ProjectsPage from "./pages/Projects.tsx";
-
+import Kanban from "./components/kanban/Kanban.tsx";
+import ErrorBoundary from "./pages/ErrorBoundary.tsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -28,12 +29,22 @@ const router = createBrowserRouter([
       </App>
     ),
   },
+  {
+    path: "/project/:projectId",
+    element: (
+      <App>
+        <Kanban />
+      </App>
+    ),
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
+    <ErrorBoundary>
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
+    </ErrorBoundary>
   </React.StrictMode>
 );
