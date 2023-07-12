@@ -5,6 +5,7 @@ import {
   useDeleteProjectMutation,
   useGetProjectsQuery,
 } from "../services/projectsApi";
+import { Link } from "react-router-dom";
 import { ProjectState } from "../types/typings";
 import ViewTimer from "./ViewTimer";
 
@@ -14,7 +15,6 @@ interface Props {
 
 const ProjectsTable = ({ projects }: Props) => {
   const { refetch } = useGetProjectsQuery("projects");
-
   const [deleteProject] = useDeleteProjectMutation();
 
   function handleDelete(key: string) {
@@ -23,19 +23,18 @@ const ProjectsTable = ({ projects }: Props) => {
   }
 
   return (
-    <div className="max-w-screen-xl mx-auto px-4 md:px-8">
+    <div className="max-w-screen-xl mx-auto px-4 md:px-8 ">
       <div className="max-w-lg">
         <h3 className="text-gray-800 text-xl font-bold sm:text-2xl">
           Projects
         </h3>
         <p className="text-gray-600 mt-2">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry.
+          You can administrate your projects here
         </p>
       </div>
-      <div className="mt-12 shadow-sm border rounded-lg overflow-x-auto">
+      <div className="bg-slate-200 mt-12 shadow-lg border rounded-lg overflow-x-auto">
         <table className="w-full table-auto text-sm text-left">
-          <thead className="bg-gray-50 text-gray-600 font-medium border-b">
+          <thead className="bg-slate-800 text-slate-50 font-medium border-b">
             <tr>
               <th className="py-3 px-6">Project</th>
               <th className="py-3 px-6">Description</th>
@@ -44,10 +43,13 @@ const ProjectsTable = ({ projects }: Props) => {
               <th className="py-3 px-6">Delete</th>
             </tr>
           </thead>
-          <tbody className="text-gray-600 divide-y">
+          <tbody className="text-gray-800 divide-y-2 divide-slate-300">
             {projects?.map((project, idx) => (
               <tr key={idx}>
-                <td className="px-6 py-4 whitespace-nowrap">{project.name}</td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <Link to={`/project/${project.key}`}>    {project.name}</Link>
+              
+                  </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {project.description}
                 </td>
