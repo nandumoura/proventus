@@ -43,10 +43,9 @@ export const createKanban = async (kanbanData) => {
 
 export const updateKanban = async (key, kanbanData) => {
   try {
-    const updatedKanban = {
-      ...kanbanData,
-      updatedAt: Date.now(),
-    };
+    const { createdAt, ...updatedKanban } = kanbanData; // Remover a propriedade "createdAt" do objeto "kanbanData"
+    updatedKanban.updatedAt = Date.now(); // Adicionar ou atualizar a propriedade "updatedAt"
+
     await db.update(updatedKanban, key);
     const newKanban = await db.get(key);
     return newKanban;
@@ -55,6 +54,7 @@ export const updateKanban = async (key, kanbanData) => {
     throw error;
   }
 };
+
 
 export const deleteKanban = async (key) => {
   try {

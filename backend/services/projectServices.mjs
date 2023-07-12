@@ -44,10 +44,9 @@ export const createProject = async (projectData) => {
 
 export const updateProject = async (key, projectData) => {
   try {
-    const updatedProject = {
-      ...projectData,
-      updatedAt: Date.now(),
-    };
+    const { createdAt, ...updatedProject } = projectData; // Remover a propriedade "createdAt" do objeto "projectData"
+    updatedProject.updatedAt = Date.now(); // Adicionar ou atualizar a propriedade "updatedAt"
+
     await db.update(updatedProject, key);
     return updatedProject;
   } catch (error) {
@@ -55,6 +54,7 @@ export const updateProject = async (key, projectData) => {
     throw error;
   }
 };
+
 
 export const deleteProject = async (key) => {
   try {

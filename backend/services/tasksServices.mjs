@@ -1,8 +1,7 @@
 import { Deta } from "deta";
-import {fetchKanban} from "./kanbanServices.mjs"
+import { fetchKanban } from "./kanbanServices.mjs";
 const deta = Deta();
 const db = deta.Base("Tasks");
-
 
 export const getTasksOfProjects = async (projectId) => {
   try {
@@ -24,7 +23,7 @@ export const getTasksOfKanbaColumn = async (columnId) => {
 
 export const createTask = async (taskData, projectId) => {
   try {
-    const kanban = await fetchKanban(projectId)
+    const kanban = await fetchKanban(projectId);
     const newTask = {
       ...taskData,
       columnId: kanban.columns[0].id,
@@ -42,10 +41,9 @@ export const createTask = async (taskData, projectId) => {
 
 export const updateTask = async (key, taskData) => {
   try {
-    const newTask = {
-      ...taskData,
-      updatedAt: Date.now(),
-    };
+    const { createdAt, ...newTask } = taskData; // Remover a propriedade "createdAt" do objeto "taskData"
+    newTask.updatedAt = Date.now(); // Adicionar ou atualizar a propriedade "updatedAt"
+
     const taskUpdated = await db.update(newTask, key);
     return taskUpdated;
   } catch (error) {

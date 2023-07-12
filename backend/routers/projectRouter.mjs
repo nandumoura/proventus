@@ -36,8 +36,9 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:key", async (req, res) => {
+  const {key,...bodyWithoutKey} = req.body
   try {
-    const project = await updateProject(req.params.key, req.body);
+    const project = await updateProject(req.params.key, bodyWithoutKey);
     res.send({ success: true, project });
   } catch (error) {
     console.error(error);
