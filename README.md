@@ -1,45 +1,47 @@
 # Proventus APP
 
-Proventus é um app de gerenciamento de projetos com cronometro de tempo em tarefas focado em atender Freelancers, existem diversas soluções no mercado com quadro de kanbam, e para gerenciamento de projetos, mas nenhuma delas nativamente tem cronometro para registrar o tempo das tarefas todas voce precisa instalar um addon de terceiros.
-O Projeto é open source e hospedado na [Deta Space](https://deta.space/docs/en)
-Voce pode utilizar e hospedar gratuitamente vale lembrar que a  proposta da Deta Space é ser uma nuvem pessoal e não atender diversos usuarios em um futuro devem criar um sistema focado em multiplos usuarios que permita a plataforma rentabilizar
-o processo é bem simples veja o tutorial abaixo.
+Proventus is a project management app with task time tracking, focused on serving freelancers. While there are various solutions in the market with Kanban boards and project management features, none of them natively include a timer to track task time. To do so, you would need to install a third-party add-on.
 
-## Sugestões ou erros
-Caso tenha alguma sugestão de mudanças entre em contato comigo e deixe sua sugestão por não possuir muita experiencia na gestão de projetos adicionei os itens que fazem mais sentido para mim e que na minha opinião faltam em outros projetos mas gostaria que esse software possa atender outras pessoas e ajudar outros freelancers, você pode sugerir melhorias ou indicar erros criando uma nova Issue
+The project is open-source and hosted on [Deta Space](https://deta.space/docs/en). You can use and host it for free. It's important to note that Deta Space aims to be a personal cloud and may not cater to multiple users in the future. They may create a system focused on multiple users to generate revenue.
 
-### erros 
-Caso esteja indicando erros tente explicar como o erro aconteceu, como posso fazer para chegar no mesmo erro, fornecer informações adicionais sobre navegador seu dispositivo e se possivel fornecer um link de video no youtube ou imagem descritiva do erro
+The process is straightforward. Please see the tutorial below.
 
-## Agradecimentos
-Quero deixar o agradecimento a todos desenvolvedores e contribuidores das bibliotecas e ferramentas abaixo que facilitam demais a vida de desenvolvedores de software.
+## Suggestions or Errors
+
+If you have any suggestions for changes, please contact me and share your ideas. As I don't have much experience in project management, I have added the features that make the most sense to me and that, in my opinion, are missing in other projects. However, I would like this software to meet the needs of other people and help other freelancers. You can suggest improvements or report errors by creating a new issue.
+
+### Errors
+
+If you are reporting errors, please try to explain how the error occurred and provide additional information about your browser, device, and if possible, a YouTube video link or a descriptive image of the error.
+
+## Acknowledgments
+
+I would like to express my gratitude to all the developers and contributors of the libraries and tools listed below, as they greatly facilitate the lives of software developers.
 
 ## ReactJS
-[ReactJS](https://react.dev/)
-Essa é minha escolha principal para criação de frontend, muito pela comunidade e facilidade de desenvolvimento rápido de interfaces.
 
+[ReactJS](https://react.dev/) This is my primary choice for frontend development, mostly due to the community and the ease of quickly building interfaces.
 
 ## Deta Space
-[Deta Space](https://deta.space/docs/en)
-Durante o andar do projeto acabei conhecendo o Deta Space e a proposta deles de nuvem pessoal é algo muito diferente de tudo que ja tinha visto. 
-Gostei muito do projeto e fiz o projeto focado em hospedar com eles e transformar o projeto em um sistema de gerenciamento de projetos focado em freelancers para que possam gerenciar o tempo gasto em seus projetos e possam no futuro revisar suas estimativas de gastos ao criar orçamentos e melhor a sua forma de precificação.
+
+[Deta Space](https://deta.space/docs/en) During the course of the project, I came across Deta Space and their concept of a personal cloud, which was something I had never seen before. I really liked the project and decided to host it with them, transforming it into a project management system focused on freelancers. This way, freelancers can track the time spent on their projects and later review their expenditure estimates to create budgets and improve their pricing approach.
 
 ## Float UI
-Alguns elementos visuais foram retirados de [FloatUI](https://www.floatui.com/)
+
+Some visual elements were taken from [FloatUI](https://www.floatui.com/).
 
 ## Tailwind
-[TailwindCSS](https://tailwindcss.com/)
-Tem sido minha escolha pessoal para estilizar projetos ReactJS 
 
-## Redux toolkit
-[Redux toolkit](https://redux-toolkit.js.org/)
-Redux é praticamente o padrão da insdustria para gerenciamento de estado em aplicações react no inicio do projeto cheguei a testar zustand e Nextjs pra o projeto mas o NextJS acabou aumentando demais a complexidade do projeto e o controle de estado entre componentes de servidor e de cliente acabou tomando muito tempo do projeto então decidi modificar para utilizar Expressjs para servidor e React puro, com essa escolha o Redux me pareceu mais interessante
+[TailwindCSS](https://tailwindcss.com/) This has been my personal choice for styling ReactJS projects.
+
+## Redux Toolkit
+
+[Redux Toolkit](https://redux-toolkit.js.org/) Redux is practically an industry standard for state management in React applications. At the beginning of the project, I also tested Zustand and Next.js, but Next.js ended up increasing the complexity of the project too much. Handling state between server-side and client-side components took up a lot of time. Therefore, I decided to switch to using Express.js for the server and pure React. With this choice, Redux seemed more interesting to me.
 
 ## RTK Query
-[Rtk Query](https://redux-toolkit.js.org/rtk-query/overview)
-Solução dos desenvolvedore do redux para lidar com cache, e fetching de dados, é a primeira vez que utilizo e me pareceu resolver a maioria dos problemas relacionados a cache e fetching
+
+[Rtk Query](https://redux-toolkit.js.org/rtk-query/overview) This is a solution developed by the Redux team to handle caching and data fetching. It's my first time using it, and it seems to solve most of the problems related to caching and fetching.
 
 ## React DnD
-[React DnD](https://react-dnd.github.io/react-dnd/docs/overview)
-Biblioteca drag and drop para ReactJS, simples, facil de implementar e bem documentada.
 
+[React DnD](https://react-dnd.github.io/react-dnd/docs/overview) It's a drag-and-drop library for ReactJS that is simple, easy to implement, and well-documented.

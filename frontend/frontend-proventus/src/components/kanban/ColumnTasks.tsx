@@ -6,10 +6,11 @@ import TrashIcon from "../../icons/trash";
 export interface TaskColumnProps {
   title: string;
   tasks: Task[];
+  editMode: boolean;
   column: {
     id: string;
     title: string;
-  }
+  };
   onRemove: (columnId: string) => void;
   onItemDrop: (titleColumnTarget: string, id: string) => void;
 }
@@ -17,10 +18,10 @@ export interface TaskColumnProps {
 const TaskColumn: React.FC<TaskColumnProps> = ({
   column,
   tasks,
+  editMode,
   onItemDrop,
   onRemove,
 }) => {
-
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: "draggableItem",
     drop: (item: DragItem) => onItemDrop(column.title, item.id),
@@ -41,14 +42,16 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
     >
       <div className="flex justify-between">
         <h3>{column.title}</h3>
-        <button
-        className="text-red-500 hover:text-red-300 p-2 my-2 hover:bg-slate-500 bg-slate-100 shadow-md rounded"
-          onClick={() => {
-            onRemove(column.id);
-          }}
-        >
-          <TrashIcon />
-        </button>
+        {editMode && (
+          <button
+            className="text-red-500 hover:text-slate-50 p-2 my-2 hover:bg-red-300 bg-slate-100 shadow-md rounded"
+            onClick={() => {
+              onRemove(column.id);
+            }}
+          >
+            <TrashIcon />
+          </button>
+        )}
       </div>
 
       <div className={`min-w-full bg-slate-100 p-4 rounded-md `}>

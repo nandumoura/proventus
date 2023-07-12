@@ -12,6 +12,7 @@ import CreateProject from "./pages/CreateProject.tsx";
 import ProjectsPage from "./pages/Projects.tsx";
 import Kanban from "./components/kanban/Kanban.tsx";
 import ErrorBoundary from "./pages/ErrorBoundary.tsx";
+import AddTaskPage from "./pages/AddTask.tsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -34,6 +35,14 @@ const router = createBrowserRouter([
     element: (
       <App>
         <Kanban />
+      </App>
+    ),
+  },
+  {
+    path: "/project/:projectId/addtask",
+    element: (
+      <App>
+        <AddTaskPage />
       </App>
     ),
   },

@@ -1,10 +1,12 @@
 export interface Task {
-  key: string;
+  key?: string;
   title: string;
   description: string;
   projectId: string;
-  columnId: string;
+  columnId?: string;
   timeSpend: number;
+  createdAt?: number;
+  updatedAt?: number;
 }
 export interface ProjectState {
   key?: string;
