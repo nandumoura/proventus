@@ -1,7 +1,9 @@
 export interface Task {
-  id: string;
-  name: string;
+  key: string;
+  title: string;
+  description: string;
   projectId: string;
+  columnId: string;
   timeSpend: number;
 }
 export interface ProjectState {

@@ -1,60 +1,98 @@
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
-
+import { useParams } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 import { ChangeEvent, useEffect, useState } from "react";
-import {  Task } from "../../types/typings";
+import { Task } from "../../types/typings";
 import TaskColumn from "./ColumnTasks";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
-  addColumn,
-  removeColumn,
-  addTask,
-  moveTask,
-} from "../../features/projects/kanbamSlice";
+  useGetKanbanQuery,
+  useAddColumnMutation,
+} from "../../services/kanbanApi";
+import { useGetTasksByProjectIdQuery } from "../../services/tasksApi";
 
 export interface KanbanProps {
   tasks: Task[];
 }
 
-export default function Kanban({ tasks }: KanbanProps) {
-  console.log("carregou kanban")
-  const dispatch = useAppDispatch();
-  const Kanban = useAppSelector((state) => state.kanban);
+export default function Kanban() {
+  const { projectId } = useParams();
+  const [addColumn] = useAddColumnMutation();
+  const {
+    data: kanban,
+    error: kanbanError,
+    isLoading: kanbanIsLoading,
+    refetch: kanbanRefetch,
+  } = useGetKanbanQuery(projectId);
 
+  const {
+    data: tasks,
+    error: tasksError,
+    isLoading: tasksIsLoading,
+  } = useGetTasksByProjectIdQuery(projectId);
   const [newColumnTitle, setNewColumnTitle] = useState("");
 
-  const handleAddColumn = () => {
+  if (kanbanError || tasksError) {
+    console.error(tasksError || kanbanError);
+    return (
+      <>An error has occurred! {JSON.stringify(tasksError || kanbanError)}</>
+    );
+  }
+
+  if (
+    tasksIsLoading ||
+    kanbanIsLoading ||
+    kanban === undefined ||
+    projectId === undefined
+  ) {
+    return <>Loading ...</>;
+  }
+
+  const handleAddColumn = async () => {
     if (newColumnTitle.trim() !== "") {
-      dispatch(addColumn(newColumnTitle));
+      const { key, ...kanbanWithoutKey } = kanban; // Remover a propriedade "key" do objeto "kanban"
+  
+      const newKanbanState = {
+        ...kanbanWithoutKey,
+        columns: [
+          ...kanbanWithoutKey.columns,
+          {
+            title: newColumnTitle,
+            id: uuidv4(),
+          },
+        ],
+      };
+  
+      await addColumn({ kanban: newKanbanState, projectKey: projectId });
+      await kanbanRefetch();
       setNewColumnTitle("");
     }
   };
 
   const handleRemoveColumn = (columnTitle: string) => {
-    dispatch(removeColumn(columnTitle));
+    // dispatch(removeColumn(columnTitle));
   };
 
-  const handleAddTask = (columnTitle: string) => {
-    const task: Task = {
-      id: Math.random().toString(36).substring(7),
-      name: "New Task",
-      projectId: "1",
-      timeSpend: 0,
-    };
-    dispatch(addTask(columnTitle, task));
-  };
+  // const handleAddTask = (columnTitle: string) => {
+  //   const task: Task = {
+  //     id: Math.random().toString(36).substring(7),
+  //     name: "New Task",
+  //     projectId: "1",
+  //     timeSpend: 0,
+  //   };
+  //   dispatch(addTask(columnTitle, task));
+  // };
 
   const handleMoveTask = (targetColumnTitle: string, taskId: string) => {
-    dispatch(moveTask({targetColumnTitle, taskId}));
+    // dispatch(moveTask({ targetColumnTitle, taskId }));
   };
 
-  useEffect(() => {
-    dispatch(addColumn("Tarefas"));
-    tasks.map((task) => {
-      dispatch(addTask({task}))
- 
-    });
-  },[]);
+  // useEffect(() => {
+  //   dispatch(addColumn("Tarefas"));
+  //   tasks.map((task) => {
+  //     dispatch(addTask({ columnTitle: "Tarefas", task }));
+  //   });
+  // }, [dispatch, tasks]);
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     setNewColumnTitle(event.target.value);
@@ -70,17 +108,15 @@ export default function Kanban({ tasks }: KanbanProps) {
           type="text"
         />
         <button onClick={handleAddColumn}>Add column</button>
-      
       </div>
       <div className="flex justify-between bg-slate-200 p-2">
-        {Kanban.columns.map((column, idx) => {
+        {kanban.columns.map((column, idx) => {
           return (
             <TaskColumn
               key={idx}
               title={column.title}
-              tasks={column.tasks}
+              tasks={tasks}
               onItemDrop={handleMoveTask}
-              setActiveTask={() => {}}
               onRemove={handleRemoveColumn}
             />
           );
