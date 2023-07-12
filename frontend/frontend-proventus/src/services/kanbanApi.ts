@@ -1,20 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { KanbanState } from "../types/typings";
-interface KanbanColumn {
-    id: string;
-    title: string;
-  }
-  
-  interface Kanban {
-    columns: KanbanColumn[];
-    createdAt: number;
-    key?: string;
-    updatedAt: number;
-  }  
+import { Kanban } from "../types/typings";
 
-interface AddColumnPayload{
-    kanban: Kanban;
-    projectKey: string;
+interface AddColumnPayload {
+  kanban: Kanban;
+  projectKey: string;
 }
 
 export const kanbanApi = createApi({
@@ -24,21 +13,18 @@ export const kanbanApi = createApi({
   endpoints: (builder) => ({
     getKanban: builder.query({
       query: (key) => `/${key}`,
-      transformResponse: (response: {
-        success: boolean;
-        kanban: Kanban;
-      }) => response.kanban,
+      transformResponse: (response: { success: boolean; kanban: Kanban }) =>
+        response.kanban,
     }),
-    addColumn: builder.mutation({
-        query: ({kanban, projectKey}:AddColumnPayload)=>({
-            url: `/${projectKey}`,
-            method: "PUT",
-            body: kanban,
-        }),
-        invalidatesTags: ["Kanban"],
-
-    })
+    updateKanban: builder.mutation({
+      query: ({ kanban, projectKey }: AddColumnPayload) => ({
+        url: `/${projectKey}`,
+        method: "PUT",
+        body: kanban,
+      }),
+      invalidatesTags: ["Kanban"],
+    }),
   }),
 });
 
-export const { useGetKanbanQuery, useAddColumnMutation } = kanbanApi;
+export const { useGetKanbanQuery, useUpdateKanbanMutation } = kanbanApi;

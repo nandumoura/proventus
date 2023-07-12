@@ -1,23 +1,29 @@
 import { useState } from "react";
 import { useDrag, useDrop, DragSourceMonitor } from "react-dnd";
 import { DraggableItemProps, DragItem, Task } from "../../types/typings";
+import TrashIcon from "../../icons/trash";
 
 export interface TaskColumnProps {
   title: string;
   tasks: Task[];
-  onRemove: (columnTitle: string) => void;
+  column: {
+    id: string;
+    title: string;
+  }
+  onRemove: (columnId: string) => void;
   onItemDrop: (titleColumnTarget: string, id: string) => void;
 }
 
 const TaskColumn: React.FC<TaskColumnProps> = ({
-  title,
+  column,
   tasks,
   onItemDrop,
   onRemove,
 }) => {
+
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: "draggableItem",
-    drop: (item: DragItem) => onItemDrop(title, item.id),
+    drop: (item: DragItem) => onItemDrop(column.title, item.id),
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
@@ -34,20 +40,21 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
       }`}
     >
       <div className="flex justify-between">
-        <h3>{title}</h3>
+        <h3>{column.title}</h3>
         <button
+        className="text-red-500 hover:text-red-300 p-2 my-2 hover:bg-slate-500 bg-slate-100 shadow-md rounded"
           onClick={() => {
-            onRemove(title);
+            onRemove(column.id);
           }}
         >
-          Remove
+          <TrashIcon />
         </button>
       </div>
 
       <div className={`min-w-full bg-slate-100 p-4 rounded-md `}>
         {tasks.map((task) => (
-          <DraggableItem key={task.id} id={task.id}>
-            <TaskCard name={task.name} />
+          <DraggableItem key={task.key} id={task.key}>
+            <TaskCard name={task.title} />
           </DraggableItem>
         ))}
       </div>

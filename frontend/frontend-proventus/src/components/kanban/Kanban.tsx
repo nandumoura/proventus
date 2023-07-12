@@ -5,11 +5,14 @@ import { v4 as uuidv4 } from "uuid";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Task } from "../../types/typings";
 import TaskColumn from "./ColumnTasks";
+
 import {
   useGetKanbanQuery,
-  useAddColumnMutation,
+  useUpdateKanbanMutation,
 } from "../../services/kanbanApi";
 import { useGetTasksByProjectIdQuery } from "../../services/tasksApi";
+import { removeColumnById } from "../../utils/utils";
+import SquaresPlus from "../../icons/SquaresPlus";
 
 export interface KanbanProps {
   tasks: Task[];
@@ -17,7 +20,7 @@ export interface KanbanProps {
 
 export default function Kanban() {
   const { projectId } = useParams();
-  const [addColumn] = useAddColumnMutation();
+  const [updateKanban] = useUpdateKanbanMutation();
   const {
     data: kanban,
     error: kanbanError,
@@ -47,11 +50,11 @@ export default function Kanban() {
   ) {
     return <>Loading ...</>;
   }
+  // eslint-disable-next-line no-unused-vars
+  const { key, ...kanbanWithoutKey } = kanban; // Remove the key property from object to avoid receive this in backend ocurrs an error
 
   const handleAddColumn = async () => {
     if (newColumnTitle.trim() !== "") {
-      const { key, ...kanbanWithoutKey } = kanban; // Remover a propriedade "key" do objeto "kanban"
-  
       const newKanbanState = {
         ...kanbanWithoutKey,
         columns: [
@@ -62,15 +65,18 @@ export default function Kanban() {
           },
         ],
       };
-  
-      await addColumn({ kanban: newKanbanState, projectKey: projectId });
+
+      await updateKanban({ kanban: newKanbanState, projectKey: projectId });
       await kanbanRefetch();
       setNewColumnTitle("");
     }
   };
 
-  const handleRemoveColumn = (columnTitle: string) => {
+  const handleRemoveColumn = async (columnId: string) => {
     // dispatch(removeColumn(columnTitle));
+    const kanbanWithoutColum = removeColumnById(columnId, kanbanWithoutKey);
+    await updateKanban({ kanban: kanbanWithoutColum, projectKey: projectId });
+    await kanbanRefetch();
   };
 
   // const handleAddTask = (columnTitle: string) => {
@@ -101,20 +107,29 @@ export default function Kanban() {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="header flex justify-between bg-slate-100 p-2">
-        <h2 className="font-bold text-2xl text-gray-800">Kanban</h2>
-        <input
-          value={newColumnTitle}
-          onChange={handleInputChange}
-          type="text"
-        />
-        <button onClick={handleAddColumn}>Add column</button>
+        <h2 className="flex items-center font-bold text-2xl text-gray-800">Kanban</h2>
+        <div className="flex ">
+          <input
+            className="mx-4 h-full p-2 rounded-lg "
+            value={newColumnTitle}
+            placeholder="type new column name here..."
+            onChange={handleInputChange}
+            type="text"
+          />
+          <button
+            className="bg-slate-700 text-slate-50 hover:bg-slate-300 hover:text-slate-900 p-2 h-full rounded-lg shadow "
+            onClick={handleAddColumn}
+          >
+            <SquaresPlus />
+          </button>
+        </div>
       </div>
       <div className="flex justify-between bg-slate-200 p-2">
         {kanban.columns.map((column, idx) => {
           return (
             <TaskColumn
               key={idx}
-              title={column.title}
+              column={column}
               tasks={tasks}
               onItemDrop={handleMoveTask}
               onRemove={handleRemoveColumn}

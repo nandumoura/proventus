@@ -1,4 +1,4 @@
-import { Timer } from "../types/typings";
+import { Kanban, Timer } from "../types/typings";
 
 export const parseNumber = (value: string): number | string => {
   const parsedValue = Number(value);
@@ -52,4 +52,10 @@ export const convertToTimer = (milliseconds: number): Timer => {
     minutes,
     seconds,
   };
+};
+
+export const removeColumnById = (columnId: string, kanban: Kanban): Kanban => {
+  const updatedColumns = kanban.columns.filter((column) => column.id !== columnId);
+  const updatedKanban: Kanban = { ...kanban, columns: updatedColumns };
+  return updatedKanban;
 };

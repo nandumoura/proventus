@@ -38,8 +38,14 @@ export interface DragItem {
 }
 
 export interface KanbanColumn {
+  id: string;
   title: string;
-  tasks: Task[];
+}
+export interface Kanban {
+  columns: KanbanColumn[];
+  createdAt: number;
+  key?: string;
+  updatedAt: number;
 }
 
 export type KanbanState = {

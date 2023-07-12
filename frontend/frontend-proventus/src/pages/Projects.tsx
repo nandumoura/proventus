@@ -4,7 +4,6 @@ import { useGetProjectsQuery } from "../services/projectsApi";
 import { useEffect } from "react";
 
 const ProjectsPage = () => {
-  console.log("Carregou Projects page");
   const {
     data: projects = [],
     isLoading,
