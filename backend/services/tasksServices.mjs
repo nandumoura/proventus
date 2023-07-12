@@ -25,7 +25,6 @@ export const getTasksOfKanbaColumn = async (columnId) => {
 export const createTask = async (taskData, projectId) => {
   try {
     const kanban = await fetchKanban(projectId)
-    console.log(kanban)
     const newTask = {
       ...taskData,
       columnId: kanban.columns[0].id,

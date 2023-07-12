@@ -14,7 +14,6 @@ app.use("/kanban",kanbanRouter)
 app.use("/tasks", taskRouter)
 
 const port = process.env.PORT;
-console.log(process.env)
 app.listen(port, () => {
   console.log(`backend running on port ${port}!`);
 });
