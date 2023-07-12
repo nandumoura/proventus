@@ -16,6 +16,11 @@ export const tasksApi = createApi({
       transformResponse: (response: { success: boolean; tasks: Task[] }) =>
         response.tasks,
     }),
+    getTasksByColumnId: builder.query({
+      query: (columnId) => `/column/${columnId}`,
+      transformResponse: (response: { success: boolean; tasks: Task[] }) =>
+        response.tasks,
+    }),
     addTask: builder.mutation({
       query: (payload: AddTaskPayload) => ({
         url: `/${payload.projectId}`,
@@ -27,4 +32,8 @@ export const tasksApi = createApi({
   }),
 });
 
-export const { useGetTasksByProjectIdQuery, useAddTaskMutation } = tasksApi;
+export const {
+  useGetTasksByProjectIdQuery,
+  useAddTaskMutation,
+  useGetTasksByColumnIdQuery,
+} = tasksApi;

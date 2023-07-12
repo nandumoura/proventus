@@ -10,17 +10,13 @@ import {
   useGetKanbanQuery,
   useUpdateKanbanMutation,
 } from "../../services/kanbanApi";
-import { useGetTasksByProjectIdQuery } from "../../services/tasksApi";
+
 import { removeColumnById } from "../../utils/utils";
 import SquaresPlus from "../../icons/SquaresPlus";
 import EditIcon from "../../icons/Edit";
 
-export interface KanbanProps {
-  tasks: Task[];
-}
-
 export default function Kanban() {
-  let location = useLocation();
+  const location = useLocation();
 
   const [editMode, setEditmode] = useState(false);
   const [newColumnTitle, setNewColumnTitle] = useState("");
@@ -35,30 +31,16 @@ export default function Kanban() {
     refetch: kanbanRefetch,
   } = useGetKanbanQuery(projectId);
 
-  const {
-    data: tasks,
-    error: tasksError,
-    isLoading: tasksIsLoading,
-    refetch,
-  } = useGetTasksByProjectIdQuery(projectId);
-
   useEffect(() => {
-    refetch();
+    kanbanRefetch();
   }, [location]);
 
-  if (kanbanError || tasksError) {
-    console.error(tasksError || kanbanError);
-    return (
-      <>An error has occurred! {JSON.stringify(tasksError || kanbanError)}</>
-    );
+  if (kanbanError) {
+    console.error(kanbanError);
+    return <>An error has occurred! {JSON.stringify(kanbanError)}</>;
   }
 
-  if (
-    tasksIsLoading ||
-    kanbanIsLoading ||
-    kanban === undefined ||
-    projectId === undefined
-  ) {
+  if (kanbanIsLoading || kanban === undefined || projectId === undefined) {
     return <>Loading ...</>;
   }
   // eslint-disable-next-line no-unused-vars
@@ -178,7 +160,6 @@ export default function Kanban() {
               key={idx}
               column={column}
               editMode={editMode}
-              tasks={tasks}
               onItemDrop={handleMoveTask}
               onRemove={handleRemoveColumn}
             />
