@@ -37,6 +37,13 @@ export const tasksApi = createApi({
       }),
       invalidatesTags: ["Tasks"],
     }),
+    removeTask: builder.mutation({
+      query: (key: string) => ({
+        url: `/${key}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Tasks"],
+    }),
   }),
 });
 
@@ -45,4 +52,5 @@ export const {
   useAddTaskMutation,
   useGetTasksByColumnIdQuery,
   useUpdateTaskMutation,
+  useRemoveTaskMutation,
 } = tasksApi;

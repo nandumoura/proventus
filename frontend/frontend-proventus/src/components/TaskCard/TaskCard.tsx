@@ -4,15 +4,28 @@ import TrashIcon from "../../icons/trash";
 import { useEffect, useState } from "react";
 import Pause from "../../icons/Pause";
 import { Task } from "../../types/typings";
-import { useUpdateTaskMutation } from "../../services/tasksApi";
+import {
+  useUpdateTaskMutation,
+  useRemoveTaskMutation,
+} from "../../services/tasksApi";
 
-const TaskCard = ({ task, editMode }: { task: Task; editMode: boolean }) => {
+const TaskCard = ({
+  task,
+  editMode,
+  onReload,
+}: {
+  task: Task;
+  editMode: boolean;
+  onReload: () => void;
+}) => {
+  console.log("TaskCard loaded");
   const [miliseconds, setMiliseconds] = useState(0);
   const [paused, setPaused] = useState(true);
   const [updateTask] = useUpdateTaskMutation();
+  const [removeTask] = useRemoveTaskMutation();
 
   useEffect(() => {
-    let intervalId: any;
+    let intervalId: NodeJS.Timeout;
 
     if (!paused) {
       intervalId = setInterval(() => {
@@ -29,6 +42,10 @@ const TaskCard = ({ task, editMode }: { task: Task; editMode: boolean }) => {
     setPaused((prevPaused) => !prevPaused);
     console.log({ ...task, timeSpend: task.timeSpend + miliseconds });
     updateTask({ ...task, timeSpend: task.timeSpend + miliseconds });
+  };
+  const handleRemoveTask = async () => {
+    await removeTask(task.key || "");
+    onReload();
   };
   return (
     <div className="bg-slate-50 rounded-md shadow my-1 p-2 flex items-center justify-between">
@@ -53,7 +70,7 @@ const TaskCard = ({ task, editMode }: { task: Task; editMode: boolean }) => {
         </ButtonWithPopover>
       ) : (
         <ButtonWithPopover
-          onClickPassed={() => console.log("Todo remove task")}
+          onClickPassed={handleRemoveTask}
           isAlert={true}
           popoverText="Remove Task"
         >
