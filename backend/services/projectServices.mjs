@@ -4,6 +4,8 @@ import { Deta } from "deta";
 const deta = Deta();
 const db = deta.Base("Projects");
 
+import { getTasksOfProjects } from "./tasksServices.mjs";
+
 export const fetchProjects = async () => {
   try {
     const projects = await db.fetch();
@@ -58,6 +60,31 @@ export const updateProject = async (key, projectData) => {
 export const deleteProject = async (key) => {
   try {
     await db.delete(key);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const updateProjectTimers = async (key) => {
+  try {
+    //get project
+    const project = await getProjectById(key);
+    //get tasks
+    const tasks = await getTasksOfProjects(key);
+    // destructure projects to remove createdAt
+    const { key: unusedKey, createdAt, ...updatedProject } = project; // Remover a propriedade "createdAt" do objeto "projectData"
+    // update date
+    updatedProject.updatedAt = Date.now(); // Adicionar ou atualizar a propriedade "updatedAt"
+    // get total elapsedTimesIn tasks
+    const totalElapsedTime = tasks.reduce((accumulator, task) => {
+      return accumulator + task.timeSpend;
+    }, 0);
+    console.log(totalElapsedTime);
+    updatedProject.elapsedTime = totalElapsedTime;
+    console.log(tasks);
+    await db.update(updatedProject, key);
+    return updatedProject;
   } catch (error) {
     console.error(error);
     throw error;

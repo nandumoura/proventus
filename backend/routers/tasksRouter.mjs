@@ -6,6 +6,9 @@ import {
   createTask,
   updateTask,
 } from "../services/tasksServices.mjs";
+
+import { updateProjectTimers } from "../services/projectServices.mjs";
+
 import Express from "express";
 const router = Express.Router();
 
@@ -43,6 +46,7 @@ router.put("/:key", async (req, res) => {
   const { key, ...bodyWithoutKey } = req.body;
   try {
     const task = await updateTask(req.params.key, bodyWithoutKey);
+    await updateProjectTimers(req.body.projectId);
     res.send({ success: true, task });
   } catch (error) {
     console.error(error);
