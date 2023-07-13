@@ -1,4 +1,5 @@
 v: 0
+icon: ProventusIcon.png
 micros:
   - name: client
     dev: npm run dev
@@ -9,7 +10,7 @@ micros:
     serve: ./dist
     commands:
       - npm run build
-  
+
   - name: api
     src: backend
     path: api
