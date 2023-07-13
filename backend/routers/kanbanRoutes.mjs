@@ -1,5 +1,5 @@
 // projectRouter.mjs
-import {updateKanban,fetchKanban } from "../services/kanbanServices.mjs"
+import { updateKanban, fetchKanban } from "../services/kanbanServices.mjs";
 import Express from "express";
 const router = Express.Router();
 
@@ -14,7 +14,7 @@ router.get("/:key", async (req, res) => {
 });
 
 router.put("/:key", async (req, res) => {
- const {key,...bodyWithoutKey} = req.body
+  const { key, ...bodyWithoutKey } = req.body;
   try {
     const kanban = await updateKanban(req.params.key, bodyWithoutKey);
     res.send({ success: true, kanban });
@@ -23,7 +23,5 @@ router.put("/:key", async (req, res) => {
     res.status(500).send({ success: false, error });
   }
 });
-
-
 
 export default router;

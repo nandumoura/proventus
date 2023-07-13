@@ -19,12 +19,13 @@ import {
 import { removeColumnById } from "../../utils/utils";
 import SquaresPlus from "../../icons/SquaresPlus";
 import EditIcon from "../../icons/Edit";
-import { Task } from "../../types/typings";
+import Modal from "../Modal";
 
 export default function Kanban() {
   const location = useLocation();
 
   const [editMode, setEditmode] = useState(false);
+  const [showModalError, setShowModalError] = useState(false);
   const [newColumnTitle, setNewColumnTitle] = useState("");
 
   const { projectId } = useParams();
@@ -65,15 +66,13 @@ export default function Kanban() {
   ) {
     return <>Loading ...</>;
   }
-  // eslint-disable-next-line no-unused-vars
-  const { key, ...kanbanWithoutKey } = kanban; // Remove the key property from object to avoid receive this in backend ocurrs an error
 
   const handleAddColumn = async () => {
     if (newColumnTitle.trim() !== "") {
       const newKanbanState = {
-        ...kanbanWithoutKey,
+        ...kanban,
         columns: [
-          ...kanbanWithoutKey.columns,
+          ...kanban.columns,
           {
             title: newColumnTitle,
             id: uuidv4(),
@@ -88,18 +87,30 @@ export default function Kanban() {
   };
 
   const handleRemoveColumn = async (columnId: string) => {
-    // dispatch(removeColumn(columnTitle));
-    const kanbanWithoutColum = removeColumnById(columnId, kanbanWithoutKey);
-    await updateKanban({ kanban: kanbanWithoutColum, projectKey: projectId });
-    await kanbanRefetch();
+    //verificar se coluna possui tarefas
+    if (tasks?.some((task) => task.columnId == columnId)) {
+      setShowModalError(true);
+    } else {
+      const kanbanWithoutColum = removeColumnById(columnId, kanban);
+      await updateKanban({ kanban: kanbanWithoutColum, projectKey: projectId });
+      await kanbanRefetch();
+    }
+    return;
   };
 
   const handleMoveTask = async (targetColumnId: string, taskId: string) => {
     console.log(targetColumnId);
     const taskSelected = tasks?.find((task) => task.key == taskId);
-    const taskUpdated = { ...taskSelected, columnId: targetColumnId };
-    updateTask(taskUpdated);
-    kanbanRefetch();
+
+    if (taskSelected === undefined) {
+      return;
+    } else {
+      /* eslint-disable  @typescript-eslint/no-non-null-assertion */
+      const taskUpdated = { ...taskSelected!, columnId: targetColumnId };
+      updateTask(taskUpdated);
+      kanbanRefetch();
+      tasksRefetch();
+    }
   };
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
@@ -116,6 +127,11 @@ export default function Kanban() {
   }
   return (
     <DndProvider backend={HTML5Backend}>
+      <Modal
+        title="Cuidado"
+        description="Voce deve mover as tarefas antes de excluir colunas"
+        showModal={showModalError}
+      />
       <div className="header flex justify-between bg-slate-100 p-2">
         <h2 className="flex items-center font-bold text-2xl text-gray-800">
           Kanban

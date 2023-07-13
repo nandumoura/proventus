@@ -55,7 +55,6 @@ export const updateKanban = async (key, kanbanData) => {
   }
 };
 
-
 export const deleteKanban = async (key) => {
   try {
     await db.delete(key);

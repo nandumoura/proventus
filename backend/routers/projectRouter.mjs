@@ -1,7 +1,12 @@
 // projectRouter.mjs
-import { fetchProjects, createProject, updateProject, deleteProject } from "../services/projectServices.mjs";
-import {createKanban, deleteKanban} from "../services/kanbanServices.mjs"
-import { v4 as uuidv4 } from 'uuid';
+import {
+  fetchProjects,
+  createProject,
+  updateProject,
+  deleteProject,
+} from "../services/projectServices.mjs";
+import { createKanban, deleteKanban } from "../services/kanbanServices.mjs";
+import { v4 as uuidv4 } from "uuid";
 import Express from "express";
 const router = Express.Router();
 
@@ -21,13 +26,13 @@ router.post("/", async (req, res) => {
     const newKanban = {
       key: project.key,
       columns: [
-        { 
+        {
           id: uuidv4(),
           title: "Todo",
-        }
-      ]
-    }
-    await createKanban(newKanban)
+        },
+      ],
+    };
+    await createKanban(newKanban);
     res.send({ success: true, project });
   } catch (error) {
     console.error(error);
@@ -36,7 +41,7 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:key", async (req, res) => {
-  const {key,...bodyWithoutKey} = req.body
+  const { key, ...bodyWithoutKey } = req.body;
   try {
     const project = await updateProject(req.params.key, bodyWithoutKey);
     res.send({ success: true, project });
@@ -49,7 +54,7 @@ router.put("/:key", async (req, res) => {
 router.delete("/:key", async (req, res) => {
   try {
     await deleteProject(req.params.key);
-    await deleteKanban(req.params.key)
+    await deleteKanban(req.params.key);
     res.send({ success: true });
   } catch (error) {
     console.error(error);

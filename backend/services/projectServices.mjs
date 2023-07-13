@@ -15,14 +15,14 @@ export const fetchProjects = async () => {
   }
 };
 
-export const getProjectById = async (projectId) =>{
+export const getProjectById = async (projectId) => {
   try {
-    const project = db.get(projectId)
-    return project
+    const project = db.get(projectId);
+    return project;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};
 
 export const createProject = async (projectData) => {
   try {
@@ -54,7 +54,6 @@ export const updateProject = async (key, projectData) => {
     throw error;
   }
 };
-
 
 export const deleteProject = async (key) => {
   try {

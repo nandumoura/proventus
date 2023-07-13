@@ -1,4 +1,3 @@
-import { useState } from "react";
 import PlayIcon from "../../icons/Play";
 import ButtonWithPopover from "../ButtonWithPopover";
 import TrashIcon from "../../icons/trash";
