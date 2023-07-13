@@ -76,7 +76,7 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
       <div className={`min-w-full bg-slate-100 p-4 rounded-md `}>
         {tasks.map((task) => (
           <DraggableItem key={task.key} id={task.key || ""}>
-            <TaskCard name={task.title} editMode={editMode} />
+            <TaskCard task={task} editMode={editMode} />
           </DraggableItem>
         ))}
       </div>

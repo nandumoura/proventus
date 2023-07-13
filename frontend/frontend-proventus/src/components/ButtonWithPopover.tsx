@@ -4,10 +4,12 @@ const ButtonWithPopover = ({
   popoverText,
   children,
   isAlert,
+  onClickPassed,
 }: {
   popoverText?: string;
   children: ReactNode;
   isAlert?: boolean;
+  onClickPassed: () => void;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const colorMode = isAlert
@@ -20,7 +22,9 @@ const ButtonWithPopover = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <button className={colorMode}>{children}</button>
+      <button className={colorMode} onClick={onClickPassed}>
+        {children}
+      </button>
 
       {isHovered && (
         <div className={colorModeHover}>
