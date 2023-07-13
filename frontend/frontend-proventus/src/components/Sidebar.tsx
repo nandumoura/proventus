@@ -172,7 +172,7 @@ const Sidebar = () => {
             <a href="/" className="flex-none">
               <img
                 alt=""
-                src="https://floatui.com/logo-letter.png"
+                src="/ProventusIconT.png"
                 width={35}
                 height={35}
                 className="mx-auto"
