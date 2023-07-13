@@ -29,6 +29,14 @@ export const tasksApi = createApi({
       }),
       invalidatesTags: ["Tasks"],
     }),
+    updateTask: builder.mutation({
+      query: (task: Task) => ({
+        url: `/${task.key}`,
+        method: "PUT",
+        body: task,
+      }),
+      invalidatesTags: ["Tasks"],
+    }),
   }),
 });
 
@@ -36,4 +44,5 @@ export const {
   useGetTasksByProjectIdQuery,
   useAddTaskMutation,
   useGetTasksByColumnIdQuery,
+  useUpdateTaskMutation,
 } = tasksApi;

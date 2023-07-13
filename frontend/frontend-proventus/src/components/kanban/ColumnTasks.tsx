@@ -4,16 +4,17 @@ import TrashIcon from "../../icons/trash";
 import { useGetTasksByColumnIdQuery } from "../../services/tasksApi";
 
 import TaskCard from "../TaskCard/TaskCard";
+import { useEffect } from "react";
 
 export interface TaskColumnProps {
-  title: string;
   editMode: boolean;
   column: {
     id: string;
     title: string;
   };
   onRemove: (columnId: string) => void;
-  onItemDrop: (titleColumnTarget: string, id: string) => void;
+  onItemDrop: (titleColumnTarget: string, task: string) => void;
+  reloadTaskColumn: () => void;
 }
 
 const TaskColumn: React.FC<TaskColumnProps> = ({
@@ -21,6 +22,7 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
   editMode,
   onItemDrop,
   onRemove,
+  reloadTaskColumn,
 }) => {
   const {
     data: tasks,
@@ -29,9 +31,13 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
     refetch,
   } = useGetTasksByColumnIdQuery(column.id);
 
+  useEffect(() => {
+    refetch();
+  }, [reloadTaskColumn, refetch]);
+
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: "draggableItem",
-    drop: (item: DragItem) => onItemDrop(column.title, item.id),
+    drop: (item: DragItem) => onItemDrop(column.id, item.id),
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
@@ -40,6 +46,9 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
 
   if (tasksIsLoading || tasks === undefined || column === undefined) {
     return <>Loading ...</>;
+  }
+  if (tasksError) {
+    return <>An error has ocurred</>;
   }
   const isActive = canDrop && isOver;
 

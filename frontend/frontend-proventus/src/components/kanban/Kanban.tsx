@@ -3,7 +3,7 @@ import { DndProvider } from "react-dnd";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { ChangeEvent, useEffect, useState, KeyboardEvent } from "react";
-import { Task } from "../../types/typings";
+
 import TaskColumn from "./ColumnTasks";
 
 import {
@@ -11,9 +11,15 @@ import {
   useUpdateKanbanMutation,
 } from "../../services/kanbanApi";
 
+import {
+  useGetTasksByProjectIdQuery,
+  useUpdateTaskMutation,
+} from "../../services/tasksApi";
+
 import { removeColumnById } from "../../utils/utils";
 import SquaresPlus from "../../icons/SquaresPlus";
 import EditIcon from "../../icons/Edit";
+import { Task } from "../../types/typings";
 
 export default function Kanban() {
   const location = useLocation();
@@ -31,16 +37,32 @@ export default function Kanban() {
     refetch: kanbanRefetch,
   } = useGetKanbanQuery(projectId);
 
+  const {
+    data: tasks,
+    error: tasksError,
+    isLoading: tasksIsLoading,
+    refetch: tasksRefetch,
+  } = useGetTasksByProjectIdQuery(projectId);
+
+  const [updateTask] = useUpdateTaskMutation();
+
   useEffect(() => {
     kanbanRefetch();
-  }, [location]);
+  }, [location, kanbanRefetch]);
 
-  if (kanbanError) {
-    console.error(kanbanError);
-    return <>An error has occurred! {JSON.stringify(kanbanError)}</>;
+  if (kanbanError || tasksError) {
+    console.error(kanbanError || tasksError);
+    return (
+      <>An error has occurred! {JSON.stringify(kanbanError || tasksError)}</>
+    );
   }
 
-  if (kanbanIsLoading || kanban === undefined || projectId === undefined) {
+  if (
+    tasksIsLoading ||
+    kanbanIsLoading ||
+    kanban === undefined ||
+    projectId === undefined
+  ) {
     return <>Loading ...</>;
   }
   // eslint-disable-next-line no-unused-vars
@@ -72,26 +94,13 @@ export default function Kanban() {
     await kanbanRefetch();
   };
 
-  // const handleAddTask = (columnTitle: string) => {
-  //   const task: Task = {
-  //     id: Math.random().toString(36).substring(7),
-  //     name: "New Task",
-  //     projectId: "1",
-  //     timeSpend: 0,
-  //   };
-  //   dispatch(addTask(columnTitle, task));
-  // };
-
-  const handleMoveTask = (targetColumnTitle: string, taskId: string) => {
-    // dispatch(moveTask({ targetColumnTitle, taskId }));
+  const handleMoveTask = async (targetColumnId: string, taskId: string) => {
+    console.log(targetColumnId);
+    const taskSelected = tasks?.find((task) => task.key == taskId);
+    const taskUpdated = { ...taskSelected, columnId: targetColumnId };
+    updateTask(taskUpdated);
+    kanbanRefetch();
   };
-
-  // useEffect(() => {
-  //   dispatch(addColumn("Tarefas"));
-  //   tasks.map((task) => {
-  //     dispatch(addTask({ columnTitle: "Tarefas", task }));
-  //   });
-  // }, [dispatch, tasks]);
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     setNewColumnTitle(event.target.value);
@@ -102,7 +111,9 @@ export default function Kanban() {
       handleAddColumn();
     }
   };
-
+  function testReload() {
+    return;
+  }
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="header flex justify-between bg-slate-100 p-2">
@@ -157,6 +168,7 @@ export default function Kanban() {
         {kanban.columns.map((column, idx) => {
           return (
             <TaskColumn
+              reloadTaskColumn={testReload}
               key={idx}
               column={column}
               editMode={editMode}
