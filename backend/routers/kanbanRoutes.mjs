@@ -9,10 +9,7 @@ router.get("/:key", async (req, res) => {
     const kanban = await fetchKanban(req.params.key);
     res.send({ success: true, kanban: kanban });
   } catch (error) {
-    await createErrorLog({
-      name: "kanbanRoutes.get",
-      error,
-    });
+    await createErrorLog("kanbanRoutes.get", error);
     console.error(error);
     res.status(500).send({ success: false, error });
   }
@@ -24,10 +21,7 @@ router.put("/:key", async (req, res) => {
     const kanban = await updateKanban(req.params.key, bodyWithoutKey);
     res.send({ success: true, kanban });
   } catch (error) {
-    await createErrorLog({
-      name: "kanbanRoutes.put",
-      error,
-    });
+    await createErrorLog("kanbanRoutes.put", error);
     console.error(error);
     res.status(500).send({ success: false, error });
   }

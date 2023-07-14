@@ -12,10 +12,7 @@ export const fetchKanbans = async () => {
     kanbans.items.sort((a, b) => a.createdAt - b.createdAt);
     return kanbans.items;
   } catch (error) {
-    await createErrorLog({
-      name: "fetchKanbans",
-      error,
-    });
+    await createErrorLog("fetchKanbans", error);
     console.error(error);
     throw error;
   }
@@ -26,10 +23,7 @@ export const fetchKanban = async (key) => {
     const kanban = await db.get(key);
     return kanban;
   } catch (error) {
-    await createErrorLog({
-      name: "fetchKanban",
-      error,
-    });
+    await createErrorLog("fetchKanban", error);
     console.error(error);
     throw error;
   }
@@ -46,10 +40,7 @@ export const createKanban = async (kanbanData) => {
     const createdKanban = await db.put(kanban);
     return createdKanban;
   } catch (error) {
-    await createErrorLog({
-      name: "createKanban",
-      error,
-    });
+    await createErrorLog("createKanban", error);
     console.error(error);
     throw error;
   }
@@ -64,10 +55,7 @@ export const updateKanban = async (key, kanbanData) => {
     const newKanban = await db.get(key);
     return newKanban;
   } catch (error) {
-    await createErrorLog({
-      name: "updateKanban",
-      error,
-    });
+    await createErrorLog("updateKanban", error);
     console.error(error);
     throw error;
   }
@@ -77,10 +65,7 @@ export const deleteKanban = async (key) => {
   try {
     await db.delete(key);
   } catch (error) {
-    await createErrorLog({
-      name: "deleteKanban",
-      error,
-    });
+    await createErrorLog("deleteKanban", error);
     console.error(error);
     throw error;
   }

@@ -9,10 +9,7 @@ export const getTasksOfProjects = async (projectId) => {
     const tasks = await db.fetch({ projectId });
     return tasks.items;
   } catch (error) {
-    await createErrorLog({
-      name: "getTasksOfProjects",
-      error,
-    });
+    await createErrorLog("getTasksOfProjects", error);
     console.error(error);
   }
 };
@@ -22,10 +19,7 @@ export const getTasksOfKanbaColumn = async (columnId) => {
     const tasks = await db.fetch({ columnId });
     return tasks.items;
   } catch (error) {
-    await createErrorLog({
-      name: "getTasksOfKanbaColumn",
-      error,
-    });
+    await createErrorLog("getTasksOfKanbaColumn", error);
     console.error(error);
   }
 };
@@ -43,10 +37,7 @@ export const createTask = async (taskData, projectId) => {
     const taskCreated = await db.put(newTask);
     return taskCreated;
   } catch (error) {
-    await createErrorLog({
-      name: "createTask",
-      error,
-    });
+    await createErrorLog("createTask", error);
     console.error(error);
     throw error;
   }
@@ -60,10 +51,7 @@ export const updateTask = async (key, taskData) => {
     const taskUpdated = await db.update(newTask, key);
     return taskUpdated;
   } catch (error) {
-    await createErrorLog({
-      name: "updateTask",
-      error,
-    });
+    await createErrorLog("updateTask", error);
     console.error(error);
     throw error;
   }
@@ -73,10 +61,7 @@ export const deleteTask = async (key) => {
   try {
     await db.delete(key);
   } catch (error) {
-    await createErrorLog({
-      name: "deleteTask",
-      error,
-    });
+    await createErrorLog("deleteTask", error);
     console.error(error);
     throw error;
   }

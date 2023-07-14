@@ -17,10 +17,7 @@ router.get("/project/:projectId", async (req, res) => {
     const tasks = await getTasksOfProjects(req.params.projectId);
     res.send({ success: true, tasks });
   } catch (error) {
-    await createErrorLog({
-      name: "taskRouter.get",
-      error,
-    });
+    await createErrorLog("taskRouter.get", error);
     console.error(error);
     res.status(500).send({ success: false, error });
   }
@@ -31,10 +28,7 @@ router.get("/column/:columnId", async (req, res) => {
     const tasks = await getTasksOfKanbaColumn(req.params.columnId);
     res.send({ success: true, tasks });
   } catch (error) {
-    await createErrorLog({
-      name: "taskRouter.get",
-      error,
-    });
+    await createErrorLog("taskRouter.get", error);
     console.error(error);
     res.status(500).send({ success: false, error });
   }
@@ -45,10 +39,7 @@ router.post("/:projectId", async (req, res) => {
     const task = await createTask(req.body, req.params.projectId);
     res.send({ success: true, task });
   } catch (error) {
-    await createErrorLog({
-      name: "taskRouter.post",
-      error,
-    });
+    await createErrorLog("taskRouter.post", error);
     console.error(error);
     res.status(500).send({ success: false, error });
   }
@@ -61,10 +52,7 @@ router.put("/:key", async (req, res) => {
     await updateProjectTimers(req.body.projectId);
     res.send({ success: true, task });
   } catch (error) {
-    await createErrorLog({
-      name: "taskRouter.put",
-      error,
-    });
+    await createErrorLog("taskRouter.put", error);
     console.error(error);
     res.status(500).send({ success: false, error });
   }
@@ -75,10 +63,7 @@ router.delete("/:key", async (req, res) => {
     await deleteTask(req.params.key);
     res.send({ success: true });
   } catch (error) {
-    await createErrorLog({
-      name: "taskRouter.delete",
-      error,
-    });
+    await createErrorLog("taskRouter.delete", error);
     console.error(error);
     res.status(500).send({ success: false, error });
   }
