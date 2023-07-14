@@ -9,7 +9,7 @@ import { useCreateProjectMutation } from "../services/projectsApi";
 
 const CreateProject = () => {
   const [createProject] = useCreateProjectMutation();
-  const [resetTimer, setResetTimer] = useState(false)
+  const [resetTimer, setResetTimer] = useState(false);
   const [timerInMiliseconds, setTimerInMiliseconds] = useState(0);
   // function to reset
   const resetState = () => {
@@ -35,12 +35,11 @@ const CreateProject = () => {
   function handleClick() {
     createProject(formState);
     setFormState(resetState());
-    setResetTimer(true)
-   
+    setResetTimer(true);
   }
-  useEffect(()=>{
-    setResetTimer(false)
-  },[resetTimer])
+  useEffect(() => {
+    setResetTimer(false);
+  }, [resetTimer]);
 
   useEffect(() => {
     setFormState((prevState) => ({
@@ -69,7 +68,10 @@ const CreateProject = () => {
           placeholder=""
         />
 
-        <InputTimer timerState={setTimerInMiliseconds} isTimeToReset={resetTimer} />
+        <InputTimer
+          timerState={setTimerInMiliseconds}
+          isTimeToReset={resetTimer}
+        />
         <button
           onClick={handleClick}
           className="px-8 py-2  text-white duration-150 bg-teal-500 rounded-lg hover:bg-teal-600 active:shadow-lg"

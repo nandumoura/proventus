@@ -1,7 +1,7 @@
 import PlayIcon from "../../icons/Play";
 import ButtonWithPopover from "../ButtonWithPopover";
 import TrashIcon from "../../icons/trash";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState, memo } from "react";
 import Pause from "../../icons/Pause";
 import { Task } from "../../types/typings";
 import {
@@ -9,15 +9,13 @@ import {
   useRemoveTaskMutation,
 } from "../../services/tasksApi";
 
-const TaskCard = ({
-  task,
-  editMode,
-  onReload,
-}: {
+export interface TaskCardProps {
   task: Task;
   editMode: boolean;
   onReload: () => void;
-}) => {
+}
+
+const TaskCard = ({ task, editMode, onReload }: TaskCardProps) => {
   console.log("TaskCard loaded");
   const [miliseconds, setMiliseconds] = useState(0);
   const [paused, setPaused] = useState(true);
@@ -38,15 +36,17 @@ const TaskCard = ({
     };
   }, [paused]);
 
-  const handleStartPauseTimer = () => {
+  const handleStartPauseTimer = useCallback(() => {
     setPaused((prevPaused) => !prevPaused);
     console.log({ ...task, timeSpend: task.timeSpend + miliseconds });
     updateTask({ ...task, timeSpend: task.timeSpend + miliseconds });
-  };
-  const handleRemoveTask = async () => {
+  }, [task, miliseconds, updateTask]);
+
+  const handleRemoveTask = useCallback(async () => {
     await removeTask(task.key || "");
     onReload();
-  };
+  }, [task.key, removeTask, onReload]);
+
   return (
     <div className="bg-slate-50 rounded-md shadow my-1 p-2 flex items-center justify-between">
       <p className="p-1 flex w-full justify-between items-center ">
@@ -80,5 +80,5 @@ const TaskCard = ({
     </div>
   );
 };
-
-export default TaskCard;
+const TaskWithMemo = memo(TaskCard);
+export default TaskWithMemo;

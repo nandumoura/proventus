@@ -3,13 +3,18 @@ import { Link } from "react-router-dom";
 import { useGetProjectsQuery } from "../services/projectsApi";
 import { useEffect } from "react";
 
+import { sendErrorLogs } from "../services/errorLogsApi";
+
 const ProjectsPage = () => {
   const {
     data: projects = [],
     isLoading,
     isError,
+    error,
     refetch,
   } = useGetProjectsQuery("projects");
+
+  isError && sendErrorLogs("ProjectsPage: isError", error);
 
   useEffect(() => {
     refetch();

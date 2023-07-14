@@ -1,10 +1,10 @@
+import React, { useEffect } from "react";
 import { useDrag, useDrop, DragSourceMonitor } from "react-dnd";
 import { DraggableItemProps, DragItem } from "../../types/typings";
 import TrashIcon from "../../icons/trash";
 import { useGetTasksByColumnIdQuery } from "../../services/tasksApi";
-
 import TaskCard from "../TaskCard/TaskCard";
-import { useEffect } from "react";
+import { sendErrorLogs } from "../../services/errorLogsApi";
 
 export interface TaskColumnProps {
   editMode: boolean;
@@ -24,6 +24,7 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
   onRemove,
   reloadTaskColumn,
 }) => {
+  console.log("Taskcolumn loaded");
   const {
     data: tasks,
     error: tasksError,
@@ -47,15 +48,17 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
   if (tasksIsLoading || tasks === undefined || column === undefined) {
     return <>Loading ...</>;
   }
+
   if (tasksError) {
-    return <>An error has ocurred</>;
+    sendErrorLogs("tasksError", tasksError);
+    return <>An error has occurred</>;
   }
   const isActive = canDrop && isOver;
 
   return (
     <div
       ref={drop}
-      className={`p-2 w-1/3 min-h-fit ${
+      className={`p-2 w-full md:w-1/2  lg:w-1/3 min-h-fit ${
         isActive ? "border-dashed border-2 border-slate-700" : ""
       }`}
     >
@@ -76,7 +79,11 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
       <div className={`min-w-full bg-slate-100 p-4 rounded-md `}>
         {tasks.map((task) => (
           <DraggableItem key={task.key} id={task.key || ""}>
-            <TaskCard task={task} editMode={editMode} />
+            <TaskCard
+              task={task}
+              editMode={editMode}
+              onReload={reloadTaskColumn}
+            />
           </DraggableItem>
         ))}
       </div>
