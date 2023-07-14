@@ -5,6 +5,7 @@ import {
   updateProject,
   deleteProject,
 } from "../services/projectServices.mjs";
+import { createErrorLog } from "../services/errorLogsServices.mjs";
 import { createKanban, deleteKanban } from "../services/kanbanServices.mjs";
 import { v4 as uuidv4 } from "uuid";
 import Express from "express";
@@ -15,6 +16,10 @@ router.get("/", async (req, res) => {
     const projects = await fetchProjects();
     res.send({ success: true, projects });
   } catch (error) {
+    await createErrorLog({
+      name: "projectRouter.get",
+      error,
+    });
     console.error(error);
     res.status(500).send({ success: false, error });
   }
@@ -35,6 +40,10 @@ router.post("/", async (req, res) => {
     await createKanban(newKanban);
     res.send({ success: true, project });
   } catch (error) {
+    await createErrorLog({
+      name: "projectRouter.post",
+      error,
+    });
     console.error(error);
     res.status(500).send({ success: false, error });
   }
@@ -46,6 +55,10 @@ router.put("/:key", async (req, res) => {
     const project = await updateProject(req.params.key, bodyWithoutKey);
     res.send({ success: true, project });
   } catch (error) {
+    await createErrorLog({
+      name: "projectRouter.put",
+      error,
+    });
     console.error(error);
     res.status(500).send({ success: false, error });
   }
@@ -57,6 +70,10 @@ router.delete("/:key", async (req, res) => {
     await deleteKanban(req.params.key);
     res.send({ success: true });
   } catch (error) {
+    await createErrorLog({
+      name: "projectRouter.delete",
+      error,
+    });
     console.error(error);
     res.status(500).send({ success: false, error });
   }

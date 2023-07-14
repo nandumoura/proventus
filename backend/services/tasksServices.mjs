@@ -1,5 +1,6 @@
 import { Deta } from "deta";
 import { fetchKanban } from "./kanbanServices.mjs";
+import { createErrorLog } from "./errorLogsServices.mjs";
 const deta = Deta();
 const db = deta.Base("Tasks");
 
@@ -8,6 +9,10 @@ export const getTasksOfProjects = async (projectId) => {
     const tasks = await db.fetch({ projectId });
     return tasks.items;
   } catch (error) {
+    await createErrorLog({
+      name: "getTasksOfProjects",
+      error,
+    });
     console.error(error);
   }
 };
@@ -17,6 +22,10 @@ export const getTasksOfKanbaColumn = async (columnId) => {
     const tasks = await db.fetch({ columnId });
     return tasks.items;
   } catch (error) {
+    await createErrorLog({
+      name: "getTasksOfKanbaColumn",
+      error,
+    });
     console.error(error);
   }
 };
@@ -34,6 +43,10 @@ export const createTask = async (taskData, projectId) => {
     const taskCreated = await db.put(newTask);
     return taskCreated;
   } catch (error) {
+    await createErrorLog({
+      name: "createTask",
+      error,
+    });
     console.error(error);
     throw error;
   }
@@ -47,6 +60,10 @@ export const updateTask = async (key, taskData) => {
     const taskUpdated = await db.update(newTask, key);
     return taskUpdated;
   } catch (error) {
+    await createErrorLog({
+      name: "updateTask",
+      error,
+    });
     console.error(error);
     throw error;
   }
@@ -56,6 +73,10 @@ export const deleteTask = async (key) => {
   try {
     await db.delete(key);
   } catch (error) {
+    await createErrorLog({
+      name: "deleteTask",
+      error,
+    });
     console.error(error);
     throw error;
   }
