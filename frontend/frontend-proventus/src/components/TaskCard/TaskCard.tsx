@@ -17,30 +17,37 @@ export interface TaskCardProps {
 
 const TaskCard = ({ task, editMode, onReload }: TaskCardProps) => {
   console.log("TaskCard loaded");
-  const [miliseconds, setMiliseconds] = useState(0);
-  const [paused, setPaused] = useState(true);
+  const [startTime, setStartTime] = useState<number | null>(null);
+  const [elapsedTime, setElapsedTime] = useState<number>(task.timeSpend);
+
   const [updateTask] = useUpdateTaskMutation();
   const [removeTask] = useRemoveTaskMutation();
-
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
 
-    if (!paused) {
+    if (startTime) {
       intervalId = setInterval(() => {
-        setMiliseconds((prevMiliseconds) => prevMiliseconds + 1000);
+        setElapsedTime(Date.now() - startTime + task.timeSpend);
       }, 1000);
     }
 
     return () => {
       clearInterval(intervalId);
     };
-  }, [paused]);
+  }, [startTime, task.timeSpend]);
 
-  const handleStartPauseTimer = useCallback(() => {
-    setPaused((prevPaused) => !prevPaused);
-    console.log({ ...task, timeSpend: task.timeSpend + miliseconds });
-    updateTask({ ...task, timeSpend: task.timeSpend + miliseconds });
-  }, [task, miliseconds, updateTask]);
+  const handleStartPauseTimer = useCallback(async () => {
+    if (startTime) {
+      await updateTask({
+        ...task,
+        timeSpend: task.timeSpend + (Date.now() - startTime),
+      });
+      onReload();
+      setStartTime(null); // Pausar o timer
+    } else {
+      setStartTime(Date.now()); // Iniciar o timer
+    }
+  }, [startTime, onReload, task, elapsedTime, updateTask]);
 
   const handleRemoveTask = useCallback(async () => {
     await removeTask(task.key || "");
@@ -49,34 +56,34 @@ const TaskCard = ({ task, editMode, onReload }: TaskCardProps) => {
 
   return (
     <div className="bg-slate-50 rounded-md shadow my-1 p-2 flex items-center justify-between">
-      <p className="p-1 flex w-full justify-between items-center ">
-        {task.title}{" "}
+      <div className="flex flex-wrap  w-full justify-between items-center">
+        <p className="p-1 flex w-3/5  truncate ... text-ellipsis overflow-hidden">
+          {task.title}
+        </p>
         <span
           className={`bg-slate-100 p-2 rounded-lg shadow-md ${
-            !paused ? "text-red-500 font-bold" : "text-teal-600 font-semibold"
+            startTime ? "text-red-500 font-bold" : "text-teal-600 font-semibold"
           }`}
         >
-          {new Date(task.timeSpend + miliseconds)
-            .toISOString()
-            .substring(11, 19)}
+          {new Date(elapsedTime).toISOString().substring(11, 19)}
         </span>
-      </p>
-      {!editMode ? (
-        <ButtonWithPopover
-          onClickPassed={handleStartPauseTimer}
-          popoverText={paused ? "Start Timer" : "Pause timer"}
-        >
-          {paused ? <PlayIcon /> : <Pause />}
-        </ButtonWithPopover>
-      ) : (
-        <ButtonWithPopover
-          onClickPassed={handleRemoveTask}
-          isAlert={true}
-          popoverText="Remove Task"
-        >
-          <TrashIcon />
-        </ButtonWithPopover>
-      )}
+        {!editMode ? (
+          <ButtonWithPopover
+            onClickPassed={handleStartPauseTimer}
+            popoverText={startTime ? "Start Timer" : "Pause timer"}
+          >
+            {!startTime ? <PlayIcon /> : <Pause />}
+          </ButtonWithPopover>
+        ) : (
+          <ButtonWithPopover
+            onClickPassed={handleRemoveTask}
+            isAlert={true}
+            popoverText="Remove Task"
+          >
+            <TrashIcon />
+          </ButtonWithPopover>
+        )}
+      </div>
     </div>
   );
 };

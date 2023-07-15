@@ -14,7 +14,8 @@ const ProjectsPage = () => {
     refetch,
   } = useGetProjectsQuery("projects");
 
-  isError && sendErrorLogs("ProjectsPage: isError", error);
+  isError && sendErrorLogs("ProjectsPage: isError", isError);
+  error && sendErrorLogs("ProjectsPage: error", error);
 
   useEffect(() => {
     refetch();

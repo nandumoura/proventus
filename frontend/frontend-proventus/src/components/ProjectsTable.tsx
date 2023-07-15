@@ -17,8 +17,8 @@ const ProjectsTable = ({ projects }: Props) => {
   const { refetch } = useGetProjectsQuery("projects");
   const [deleteProject] = useDeleteProjectMutation();
 
-  function handleDelete(key: string) {
-    deleteProject(key);
+  async function handleDelete(key: string) {
+    await deleteProject(key);
     refetch();
   }
 
@@ -47,9 +47,8 @@ const ProjectsTable = ({ projects }: Props) => {
             {projects?.map((project, idx) => (
               <tr key={idx}>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <Link to={`/project/${project.key}`}>    {project.name}</Link>
-              
-                  </td>
+                  <Link to={`/project/${project.key}`}> {project.name}</Link>
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {project.description}
                 </td>

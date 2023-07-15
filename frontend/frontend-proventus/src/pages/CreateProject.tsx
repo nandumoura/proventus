@@ -1,15 +1,22 @@
 import { ChangeEvent, useEffect, useState } from "react";
-//components
-import InputTimer from "../components/InputTimer";
-import Input from "../components/Input";
 // utils
 import { parseNumber } from "../utils/utils";
 // services
 import { useCreateProjectMutation } from "../services/projectsApi";
+//components
+import InputTimer from "../components/InputTimer";
+import Input from "../components/Input";
+import Alert, { AlertProps } from "../components/Alert";
+
+// todo encaminhar para pagina de projetos
+type AlertType = AlertProps["type"];
 
 const CreateProject = () => {
   const [createProject] = useCreateProjectMutation();
   const [resetTimer, setResetTimer] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertType, setAlertType] = useState<AlertType>("SUCCESS");
+  const [alertMessage, setAlertMessage] = useState("");
   const [timerInMiliseconds, setTimerInMiliseconds] = useState(0);
   // function to reset
   const resetState = () => {
@@ -32,8 +39,20 @@ const CreateProject = () => {
     }));
   };
 
-  function handleClick() {
-    createProject(formState);
+  // handle click create new project
+  async function handleClick() {
+    const result = await createProject(formState);
+
+    if (result?.data?.key?.length > 0) {
+      setShowAlert(true);
+      setAlertType("SUCCESS");
+      setAlertMessage("Project: " + result.data.name + " created with success");
+    } else {
+      setShowAlert(true);
+      setAlertType("ERROR");
+      setAlertMessage("Error: project not created");
+    }
+
     setFormState(resetState());
     setResetTimer(true);
   }
@@ -47,11 +66,21 @@ const CreateProject = () => {
       estimatedTime: timerInMiliseconds,
     }));
   }, [timerInMiliseconds]);
+
+  function closeAlert() {
+    setShowAlert(false);
+  }
   return (
     <section className="">
       <div className="flex justify-between pb-10">
         <h1 className="">Create Project Page </h1>
       </div>
+      <Alert
+        type={alertType}
+        message={alertMessage}
+        showAlert={showAlert}
+        onCloseAlert={closeAlert}
+      />
       <div className=" bg-white max-w-3xl p-8 shadow-md space-y-4  mt-4">
         <Input
           value={formState.name}
