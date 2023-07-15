@@ -7,12 +7,13 @@ import { useCreateProjectMutation } from "../services/projectsApi";
 import InputTimer from "../components/InputTimer";
 import Input from "../components/Input";
 import Alert, { AlertProps } from "../components/Alert";
+import { ProjectState } from "../types/typings";
 
 // todo encaminhar para pagina de projetos
 type AlertType = AlertProps["type"];
 
 const CreateProject = () => {
-  const [createProject] = useCreateProjectMutation();
+  const [createProject] = useCreateProjectMutation<ProjectState>();
   const [resetTimer, setResetTimer] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertType, setAlertType] = useState<AlertType>("SUCCESS");
@@ -42,15 +43,14 @@ const CreateProject = () => {
   // handle click create new project
   async function handleClick() {
     const result = await createProject(formState);
-
-    if (result?.data?.key?.length > 0) {
+    if ("data" in result) {
       setShowAlert(true);
       setAlertType("SUCCESS");
       setAlertMessage("Project: " + result.data.name + " created with success");
     } else {
       setShowAlert(true);
       setAlertType("ERROR");
-      setAlertMessage("Error: project not created");
+      setAlertMessage("Error: project not created" + result?.error);
     }
 
     setFormState(resetState());

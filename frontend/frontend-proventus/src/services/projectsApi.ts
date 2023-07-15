@@ -15,7 +15,7 @@ export const projectsApi = createApi({
         projects: ProjectState[];
       }) => response.projects,
     }),
-    createProject: builder.mutation({
+    createProject: builder.mutation<ProjectState, Partial<ProjectState>>({
       query: (project: ProjectState) => ({
         url: `/`,
         method: "POST",
@@ -40,4 +40,8 @@ export const projectsApi = createApi({
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
 
-export const { useGetProjectsQuery, useCreateProjectMutation, useDeleteProjectMutation } = projectsApi;
+export const {
+  useGetProjectsQuery,
+  useCreateProjectMutation,
+  useDeleteProjectMutation,
+} = projectsApi;
