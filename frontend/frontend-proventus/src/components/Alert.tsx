@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 export interface AlertProps {
   type: "SUCCESS" | "ERROR";
   message: string;

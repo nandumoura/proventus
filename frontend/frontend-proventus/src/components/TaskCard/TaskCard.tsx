@@ -47,7 +47,7 @@ const TaskCard = ({ task, editMode, onReload }: TaskCardProps) => {
     } else {
       setStartTime(Date.now()); // Iniciar o timer
     }
-  }, [startTime, onReload, task, elapsedTime, updateTask]);
+  }, [startTime, onReload, task, updateTask]);
 
   const handleRemoveTask = useCallback(async () => {
     await removeTask(task.key || "");
