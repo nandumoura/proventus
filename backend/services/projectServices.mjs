@@ -63,10 +63,11 @@ export const updateProject = async (key, projectData) => {
 };
 
 export const deleteProject = async (key) => {
+  //todo implementar forma de excluir tarefas e kanban apos excluir projetos
   try {
     await db.delete(key);
   } catch (error) {
-    await createErrorLog("updateTask", error);
+    await createErrorLog("deleteProject", error);
     console.error(error);
     throw error;
   }

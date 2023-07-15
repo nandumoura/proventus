@@ -22,9 +22,7 @@ Proventus is a project management app with task time tracking, focused on servin
 - Open-source and free to use
 - Hosted on Deta Space
 - Personal cloud concept
-- Support for freelancers
-- Error reporting and issue tracking
 
 ### Release Changelogs
 
-Circular logo of a productivity app with a bee and letter P with black and yellow colors
+Fix minor errors
