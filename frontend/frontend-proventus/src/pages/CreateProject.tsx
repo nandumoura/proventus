@@ -28,7 +28,9 @@ const CreateProject = () => {
       elapsedTime: 0,
     };
   };
+
   const [formState, setFormState] = useState(resetState());
+
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     // the code below change string to number case field is estimatedTime
@@ -44,18 +46,17 @@ const CreateProject = () => {
   async function handleClick() {
     const result = await createProject(formState);
     if ("data" in result) {
-      setShowAlert(true);
       setAlertType("SUCCESS");
       setAlertMessage("Project: " + result.data.name + " created with success");
     } else {
-      setShowAlert(true);
       setAlertType("ERROR");
       setAlertMessage("Error: project not created" + result?.error);
     }
-
+    setShowAlert(true);
     setFormState(resetState());
     setResetTimer(true);
   }
+
   useEffect(() => {
     setResetTimer(false);
   }, [resetTimer]);
