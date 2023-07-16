@@ -1,9 +1,13 @@
-import PlayIcon from "../../icons/Play";
-import ButtonWithPopover from "../ButtonWithPopover";
-import TrashIcon from "../../icons/trash";
 import { useCallback, useEffect, useState, memo } from "react";
+import { Link } from "react-router-dom";
+//components
+import TrashIcon from "../../icons/trash";
+import PlayIcon from "../../icons/Play";
 import Pause from "../../icons/Pause";
+import ButtonWithPopover from "../ButtonWithPopover";
+//typings
 import { Task } from "../../types/typings";
+//services
 import {
   useUpdateTaskMutation,
   useRemoveTaskMutation,
@@ -16,7 +20,6 @@ export interface TaskCardProps {
 }
 
 const TaskCard = ({ task, editMode, onReload }: TaskCardProps) => {
-  console.log("TaskCard loaded");
   const [startTime, setStartTime] = useState<number | null>(null);
   const [elapsedTime, setElapsedTime] = useState<number>(task.timeSpend);
 
@@ -58,7 +61,9 @@ const TaskCard = ({ task, editMode, onReload }: TaskCardProps) => {
     <div className="bg-slate-50 rounded-md shadow my-1 p-2 flex items-center justify-between">
       <div className="flex flex-wrap  w-full justify-between items-center">
         <p className="p-1 flex w-3/5  truncate ... text-ellipsis overflow-hidden">
-          {task.title}
+          <Link to={`/project/${task.projectId}/edittask/${task.key}`}>
+            {task.title}
+          </Link>
         </p>
         <span
           className={`bg-slate-100 p-2 rounded-lg shadow-md ${
