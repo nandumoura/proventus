@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, memo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 //components
 import TrashIcon from "../../icons/trash";
 import PlayIcon from "../../icons/Play";
@@ -12,6 +12,7 @@ import {
   useUpdateTaskMutation,
   useRemoveTaskMutation,
 } from "../../services/tasksApi";
+import EditIcon from "../../icons/Edit";
 
 export interface TaskCardProps {
   task: Task;
@@ -25,6 +26,9 @@ const TaskCard = ({ task, editMode, onReload }: TaskCardProps) => {
 
   const [updateTask] = useUpdateTaskMutation();
   const [removeTask] = useRemoveTaskMutation();
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
 
@@ -57,14 +61,13 @@ const TaskCard = ({ task, editMode, onReload }: TaskCardProps) => {
     onReload();
   }, [task.key, removeTask, onReload]);
 
+  const handleEditTask = () => {
+    navigate(`/project/${task.projectId}/edittask/${task.key}`);
+  };
   return (
-    <div className="bg-slate-50 rounded-md shadow my-1 p-2 flex items-center justify-between">
-      <div className="flex flex-wrap  w-full justify-between items-center">
-        <p className="p-1 flex w-3/5  truncate ... text-ellipsis overflow-hidden">
-          <Link to={`/project/${task.projectId}/edittask/${task.key}`}>
-            {task.title}
-          </Link>
-        </p>
+    <div className="bg-slate-50 rounded-md shadow my-1 p-2 flex flex-wrap items-center justify-between">
+      <div className="flex  w-full justify-between items-center">
+        <p className="p-1 flex w-3/5">{task.title}</p>
         <span
           className={`bg-slate-100 p-2 rounded-lg shadow-md ${
             startTime ? "text-red-500 font-bold" : "text-teal-600 font-semibold"
@@ -80,13 +83,22 @@ const TaskCard = ({ task, editMode, onReload }: TaskCardProps) => {
             {!startTime ? <PlayIcon /> : <Pause />}
           </ButtonWithPopover>
         ) : (
-          <ButtonWithPopover
-            onClickPassed={handleRemoveTask}
-            isAlert={true}
-            popoverText="Remove Task"
-          >
-            <TrashIcon />
-          </ButtonWithPopover>
+          <>
+            <ButtonWithPopover
+              onClickPassed={handleEditTask}
+              isAlert={false}
+              popoverText="Edit Task"
+            >
+              <EditIcon />
+            </ButtonWithPopover>{" "}
+            <ButtonWithPopover
+              onClickPassed={handleRemoveTask}
+              isAlert={true}
+              popoverText="Remove Task"
+            >
+              <TrashIcon />
+            </ButtonWithPopover>
+          </>
         )}
       </div>
     </div>

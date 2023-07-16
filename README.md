@@ -1,3 +1,7 @@
+> "Waste no more time arguing about what a good man should be. Be one"
+>
+> - Marcus Aurelius
+
 # Proventus APP
 
 Proventus is a project management app with task time tracking, focused on serving freelancers. While there are various solutions in the market with Kanban boards and project management features, none of them natively include a timer to track task time. To do so, you would need to install a third-party add-on.
@@ -45,3 +49,7 @@ Some visual elements were taken from [FloatUI](https://www.floatui.com/).
 ## React DnD
 
 [React DnD](https://react-dnd.github.io/react-dnd/docs/overview) It's a drag-and-drop library for ReactJS that is simple, easy to implement, and well-documented.
+
+## Release
+
+Fix edit link
