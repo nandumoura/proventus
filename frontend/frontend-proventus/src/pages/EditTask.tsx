@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import Input from "../components/Input";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   useUpdateTaskMutation,
   useGetTasksByProjectIdQuery,
