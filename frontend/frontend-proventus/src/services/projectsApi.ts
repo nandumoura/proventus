@@ -27,6 +27,18 @@ export const projectsApi = createApi({
       }) => response.project,
       invalidatesTags: ["Projects"],
     }),
+    updateProject: builder.mutation({
+      query: (project: ProjectState) => ({
+        url: `/${project.key}`,
+        method: "PUT",
+        body: project,
+      }),
+      transformResponse: (response: {
+        success: boolean;
+        project: ProjectState;
+      }) => response.project,
+      invalidatesTags: ["Projects"],
+    }),
     deleteProject: builder.mutation({
       query: (key: string) => ({
         url: `/${key}`,
@@ -44,4 +56,5 @@ export const {
   useGetProjectsQuery,
   useCreateProjectMutation,
   useDeleteProjectMutation,
+  useUpdateProjectMutation,
 } = projectsApi;
