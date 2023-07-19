@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, memo } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 //components
 import TrashIcon from "../../icons/trash";
 import PlayIcon from "../../icons/Play";

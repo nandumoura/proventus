@@ -31,7 +31,6 @@ import Modal from "../Modal";
 import { sendErrorLogs } from "../../services/errorLogsApi";
 
 export default function Kanban() {
-  console.log("Kanban loaded");
   const location = useLocation();
 
   const [editMode, setEditmode] = useState(false);
@@ -104,7 +103,6 @@ export default function Kanban() {
   };
 
   const handleMoveTask = async (targetColumnId: string, taskId: string) => {
-    console.log(targetColumnId);
     const taskSelected = tasks?.find((task) => task.key == taskId);
 
     if (taskSelected === undefined) {
