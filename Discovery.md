@@ -10,6 +10,10 @@ homepage: "<https://deta.space>"
 
 ## Proventus
 
+> "Waste no more time arguing about what a good man should be. Be one
+>
+> - Marcus Aurelius
+
 Proventus is a project management app with task time tracking, focused on serving freelancers. While there are various solutions in the market with Kanban boards and project management features, none of them natively include a timer to track task time. To do so, you would need to install a third-party add-on.
 
 ### Features
@@ -25,4 +29,4 @@ Proventus is a project management app with task time tracking, focused on servin
 
 ### Release Changelogs
 
-Fix minor errors
+Fix Edit card link

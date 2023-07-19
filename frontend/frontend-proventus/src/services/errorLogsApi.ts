@@ -7,7 +7,7 @@ export async function sendErrorLogs(name: string, error: any) {
       error,
     };
     const response = await axios.post("/api/error-logs", { data: dataToSend });
-    console.log(response.data); // Aqui você pode manipular a resposta do servidor
+    return response;
   } catch (error) {
     console.error(error); // Trate erros, se houver algum
   }

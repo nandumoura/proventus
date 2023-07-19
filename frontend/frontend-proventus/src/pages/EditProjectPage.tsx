@@ -2,22 +2,27 @@ import { ChangeEvent, useEffect, useState } from "react";
 // utils
 import { parseNumber } from "../utils/utils";
 // services
-import { useCreateProjectMutation } from "../services/projectsApi";
+import {
+  useGetProjectsQuery,
+  useUpdateProjectMutation,
+} from "../services/projectsApi";
 //components
 import InputTimer from "../components/InputTimer";
 import Input from "../components/Input";
-import Alert, { AlertProps } from "../components/Alert";
-import { ProjectState } from "../types/typings";
+//libs
+import { useNavigate, useParams } from "react-router-dom";
 
 // todo encaminhar para pagina de projetos
-type AlertType = AlertProps["type"];
 
 const CreateProject = () => {
-  const [createProject] = useCreateProjectMutation<ProjectState>();
+  const { projectKey } = useParams();
+  const { data: projects = [], refetch } = useGetProjectsQuery("projects");
+  const [updateProject] = useUpdateProjectMutation();
+  const project = projects.find((project) => project.key === projectKey);
+
+  const navigate = useNavigate();
   const [resetTimer, setResetTimer] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertType, setAlertType] = useState<AlertType>("SUCCESS");
-  const [alertMessage, setAlertMessage] = useState("");
+
   const [timerInMiliseconds, setTimerInMiliseconds] = useState(0);
   // function to reset
   const resetState = () => {
@@ -42,19 +47,14 @@ const CreateProject = () => {
     }));
   };
 
+  useEffect(() => {
+    setFormState(project || resetState);
+  }, [project]);
   // handle click create new project
-  async function handleClick() {
-    const result = await createProject(formState);
-    if ("data" in result) {
-      setAlertType("SUCCESS");
-      setAlertMessage("Project: " + result.data.name + " created with success");
-    } else {
-      setAlertType("ERROR");
-      setAlertMessage("Error: project not created" + result?.error);
-    }
-    setShowAlert(true);
-    setFormState(resetState());
-    setResetTimer(true);
+  async function handleUpdateProject() {
+    await updateProject(formState);
+    await refetch();
+    navigate("/");
   }
 
   useEffect(() => {
@@ -68,20 +68,12 @@ const CreateProject = () => {
     }));
   }, [timerInMiliseconds]);
 
-  function closeAlert() {
-    setShowAlert(false);
-  }
   return (
     <section className="">
       <div className="flex justify-between pb-10">
         <h1 className="">Create Project Page </h1>
       </div>
-      <Alert
-        type={alertType}
-        message={alertMessage}
-        showAlert={showAlert}
-        onCloseAlert={closeAlert}
-      />
+
       <div className=" bg-white max-w-3xl p-8 shadow-md space-y-4  mt-4">
         <Input
           value={formState.name}
@@ -103,10 +95,10 @@ const CreateProject = () => {
           isTimeToReset={resetTimer}
         />
         <button
-          onClick={handleClick}
+          onClick={handleUpdateProject}
           className="px-8 py-2  text-white duration-150 bg-teal-500 rounded-lg hover:bg-teal-600 active:shadow-lg"
         >
-          Add Project
+          Save Project
         </button>
       </div>
     </section>

@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useDrag, useDrop, DragSourceMonitor } from "react-dnd";
+
 import { DraggableItemProps, DragItem } from "../../types/typings";
 import TrashIcon from "../../icons/trash";
 import { useGetTasksByColumnIdQuery } from "../../services/tasksApi";
@@ -24,7 +25,6 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
   onRemove,
   reloadTaskColumn,
 }) => {
-  console.log("Taskcolumn loaded");
   const {
     data: tasks,
     error: tasksError,
