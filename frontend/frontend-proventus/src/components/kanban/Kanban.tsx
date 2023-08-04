@@ -130,8 +130,8 @@ export default function Kanban() {
   return (
     <DndProvider backend={HTML5Backend}>
       <Modal
-        title="Cuidado"
-        description="Você deve mover as tarefas antes de excluir colunas"
+        title="Warning"
+        description="You need to move tasks before delete columns"
         showModal={showModalError}
       />
       {kanbanIsLoading || tasksIsLoading || !kanban ? (
@@ -179,6 +179,7 @@ export default function Kanban() {
                   className="flex bg-red-500 text-slate-50 hover:bg-red-300 hover:text-slate-900 p-2 h-full rounded-lg shadow "
                   onClick={() => {
                     setEditmode((prevEditMode) => !prevEditMode);
+                    editMode == false ?? window.location.reload();
                   }}
                 >
                   <EditIcon /> <span className="ml-2">Edit mode</span>
