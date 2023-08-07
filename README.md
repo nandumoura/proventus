@@ -8,7 +8,10 @@ Proventus is a project management app with task time tracking, focused on servin
 
 The project is open-source and hosted on [Deta Space](https://deta.space/docs/en). You can use and host it for free. It's important to note that Deta Space aims to be a personal cloud and may not cater to multiple users in the future. They may create a system focused on multiple users to generate revenue.
 
-The process is straightforward. Please see the tutorial below.
+To install click in the link below
+[Install app](https://deta.space/discovery/@nandumoura/proventusexpress)
+
+Create a deta space account and install the app
 
 ## Suggestions or Errors
 
