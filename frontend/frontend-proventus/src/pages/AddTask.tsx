@@ -30,6 +30,7 @@ const AddTaskPage = () => {
   async function handleClick() {
     await addTask({ task: formState, projectId: projectId || "not found" });
     navigate(`/project/${projectId}`);
+    window.location.reload();
   }
   return (
     <section className="">

@@ -15,6 +15,8 @@ import ErrorBoundary from "./pages/ErrorBoundary.tsx";
 import AddTaskPage from "./pages/AddTask.tsx";
 import EditTask from "./pages/EditTask.tsx";
 import EditProjectPage from "./pages/EditProjectPage.tsx";
+import Help from "./pages/Help.tsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -61,6 +63,14 @@ const router = createBrowserRouter([
     element: (
       <App>
         <EditProjectPage />
+      </App>
+    ),
+  },
+  {
+    path: "/help",
+    element: (
+      <App>
+        <Help />
       </App>
     ),
   },
