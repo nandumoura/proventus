@@ -1,11 +1,10 @@
 ---
-app_name: "Proventus"
-title: "Simple Project Management tool"
-tagline: "Freelancer-focused project management with native task time tracking."
+app_name: Proventus
+title: Simple Project Management tool
+tagline: Freelancer-focused project management with native task time tracking.
 theme_color: "#f26daa"
-icon: "ProventusIcon.png"
-git: "<https://github.com/nandumoura/proventus>"
-homepage: "<https://deta.space>"
+git: https://github.com/nandumoura/proventus
+homepage: https://deta.space/discovery/@nandumoura/proventusexpress
 ---
 
 ## Proventus
